@@ -1,0 +1,124 @@
+<main id="main" class="main">
+    <section class="container">
+        <div class="row ">
+        {{#each returnOrder}}  
+           <div class="col-md-4">
+               <div class="row g-0">
+                        <div class="col-md-3 card-body">
+                            <img src="/images/product/{{this.return_products.img.[0]}}" class="img-fluid rounded-start m-3" alt="...">
+                        </div>
+                            <div class="col-md-8" >
+                                <div class="card-body" style="height: 260px;">
+                                    <h5 class="card-title">Product details</h5>
+                                    <h5>{{this.return_products.ProductName}}</h5>
+                                    <h5>{{this.return_products.ProductPrice}}</h5>
+                                   <h5>Quantity: {{this.order.products.quantity}}</h5>
+                                </div>
+                            </div>
+                            
+                </div>
+                    
+            </div>
+            
+
+            <div class="col-md-4 ">
+                <div class="card" style="height: 320px; !important">
+                    <div class="card-body" >
+                    <h5 class="card-title">Order Details</h5>
+                        <h6><strong>Address:</strong></h6>
+                         <h6>{{this.order.deliveryDetails.customerName}}</h6>
+                        <h6>{{this.order.deliveryDetails.address.HouseName}}</h6>
+                         <h6>{{this.order.deliveryDetails.address.streetName}},{{this.order.deliveryDetails.address.landmark}},</h6>
+                          <h6>{{this.order.deliveryDetails.address.city}},{{this.order.deliveryDetails.address.state}},{{this.order.deliveryDetails.address.pincode}}</h6>
+                          
+                          <h6><strong>Payment Method:</strong>{{this.order.paymentmethod}}</h6>
+                          <h6><strong>Date:</strong>{{this.order.date}}</h6>
+                          
+                    </div>
+                </div><!-- End Default Card -->
+            </div>
+            
+            <div class="col-md-4">
+                 <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Reason for return</h5>
+                        <h6><strong>Reason:</strong></h6>  
+                         <h6>{{this.complaint}}</h6> 
+                         <h6><strong>Date:</strong>{{this.Date}}</h6>
+                         <h6><strong>Discription:</strong></h6>  
+                         <h6>{{this.Discription}}</h6> <br>
+                           
+                        <form action="/admin/submit-return-status" method="post">
+                            <input type="text" name="orderId" value="{{this.order._id}}" hidden>
+                            
+                            <input type="text" name="proId" value="{{this.return_products._id}}" hidden>
+
+
+                            {{#if this.approved}}
+                                      
+                              {{!-- <select class="form-select disabled" aria-label="Default select example"  id="inputGroupSelect04{{this.product._id}}"> --}}
+                                <h6 class="badge bg-success" style="margin-left: 100px; font-size: 15px;">{{this.order.products.status}}</h6>
+                                     
+                                
+                                <button class="btn btn-outline-success" type="button" onclick="refundApprove('{{this.return_products.ProductPrice}}','{{this.order.userId}}','{{this.order._id}}','{{this.return_products._id}}')"><span>Refund</span><i class="bi bi-currency-dollar"></button></i>
+                                
+                        
+                            {{else}}
+                            {{#if this.refunded}}
+                                <h6 class="badge bg-success" style="margin-left: 100px; font-size: 15px;">{{this.order.products.status}}</h6>
+                              {{else}}
+                            
+                            <select class="form-select" aria-label="Default select example" name="status"  id="inputGroupSelect04{{this.product._id}}">
+                            <option >{{this.order.products.status}}</option>
+                             
+                              <option >Return Approved</option>
+                            </select>
+                          <button class="btn btn-outline-success" type="submit" >submit</button>
+                          {{/if}}
+                          {{/if}}
+                        </form>
+                    </div>
+                </div><!-- End Default Card -->
+            </div>
+
+            {{!-- <div class="col-md-3">
+                <div class="card text-center">
+                
+                    <div class="card-body">
+                        <h5 class="card-title">Special title treatment</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div><!-- End Special title treatmen -->
+            </div> --}}
+            <hr style="height: 10px; background: rgb(25, 43, 233);">
+            {{/each}}
+        </div>
+    </section>
+</main>    
+<script src="/assets2/js/main.js"></script>
+
+
+<script>
+    function refundApprove(amount,userId,orderId,proId){
+
+    
+	let status= "Refund Approved"
+    if(confirm("are you sure?")){
+	$.ajax({
+		url:'/admin/approve-refund',
+		data:{
+			amount:amount,
+			status:status,
+            userId:userId,
+            orderId:orderId,
+            proId:proId
+		},
+		method:'post',
+		success:()=>{
+			location.reload()
+		}
+	})
+    }
+}
+</script>

@@ -1,0 +1,87 @@
+     <main id="main" > 
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">View Products</h5>
+
+              <!-- Table with hoverable rows -->
+              <table class="table table-hover" id="myTable">
+                <thead>
+                  <tr>
+                    <th scope="col">SlNo</th>
+                    <th scope="col mt" class="text-center" style="">Banner Name</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {{#each banners}}
+                 
+                  <tr class="">
+                    {{!-- <th scope="row"><input type="checkbox" /></th> --}}
+
+                    <td>{{indexing @index}}</td>
+                    <td class="text-center">{{this.BannerName}} <br>
+                       <img src="/images/product/{{this.img.[0]}}" style="height: 200px; width: 350px;" alt="">
+                    </td>
+                    <td class="">{{this.date}}</td>
+                    
+                    
+                    <td>
+                      <a href="/admin/editbanner/{{this._id}}"><button type="button" class="btn btn-outline-primary ">Edit</button></a>
+            
+                    
+                      <button class="btn btn-outline-danger btn-block text-uppercase" onclick="deleteBanner('{{this._id}}')">
+                            Delete
+                        </button>
+                    </td>
+                    
+                 
+                {{/each}}    
+                </tbody>
+              </table>
+
+               <a href="/admin/add-banners"><button type="button" class="btn btn-outline-success ">Add Bannner</button></a>
+              <!-- End Table with hoverable rows -->
+
+            </div>
+          </div>
+        </main>  
+
+        <script src="/assets2/js/main.js"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+        <script>
+          function deleteBanner(bannerId){
+      swal({
+          title: "Are you sure?",
+          text: "It will also delete the products of this category",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+             $.ajax({
+                      url:'/admin/delete-banner',
+                      data:{
+                        id:bannerId  
+                      },
+                      type:'POST',
+                      success:(response)=>{
+                          
+                            swal("Successfully deleted", {
+                              icon: "success",
+                            });
+                                            
+                              location.reload()
+                          
+                      }
+                  })
+            
+          } else {
+            swal("Your imaginary file is safe!");
+          }
+        });
+    }
+        </script>

@@ -1,0 +1,231 @@
+    <main id="main" class="main">  
+
+        <div class="row ">
+
+          <div class="col-md-6 ">
+                <div class="card" >
+                    <div class="card-body" >
+                    <h5 class="card-title text-center">Order Address</h5>
+                        <h6 class="text-center"><strong>Name </strong>:{{orderDetails.deliveryDetails.customerName}}</h6>
+                         <h6 class="text-center"><strong>Number </strong>:{{orderDetails.deliveryDetails.mobile}}</h6>
+                        <h6 class="text-center">{{orderDetails.deliveryDetails.address.HouseName}}</h6>
+                         <h6 class="text-center">{{orderDetails.deliveryDetails.address.streetName}},{{orderDetails.deliveryDetails.address.landmark}},</h6>
+                          <h6 class="text-center">{{orderDetails.deliveryDetails.address.city}},{{orderDetails.deliveryDetails.address.state}},{{orderDetails.deliveryDetails.address.pincode}}</h6>
+                          
+                          
+                    </div>
+                </div><!-- End Default Card -->
+            </div>
+          
+            
+            
+
+            <div class="col-md-6 ">
+                <div class="card" >
+                    <div class="card-body" >
+                    <h5 class="card-title text-center">Payment Details</h5>
+                        
+                         <h6 class="text-center"><strong>Total Amount </strong>:{{orderDetails.TotalAmount}}</h6>
+                         <h6 class="text-center"><strong>Coupon Discount </strong>:{{orderDetails.TotalDiscount}}</h6>
+                         <h6 class="text-center"><strong>Total Amount Paid </strong>:{{orderDetails.TotalPayment}}</h6>
+                       <h6 class="text-center"><strong>Payment Method </strong>:{{orderDetails.paymentmethod}}</h6>
+                          
+                    </div>
+                </div><!-- End Default Card -->
+            </div>
+            
+
+          </div>
+
+            {{!-- <div class="col-md-3">
+                <div class="card text-center">
+                
+                    <div class="card-body">
+                        <h5 class="card-title">Special title treatment</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div><!-- End Special title treatmen -->
+            </div> --}}
+      
+            
+        </div>
+
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Order Details</h5>
+
+              <!-- Table with hoverable rows -->
+              <table class="table table-hover" id="myTable">
+                <thead class="table-dark" >
+                  <tr class="text-white">
+                    <th scope="col" class="text-center">Slno</th>
+                    <th scope="col" class="text-center">Product</th>
+                    {{!-- <th scope="col">Product Id</th> --}}
+                    <th scope="col" class="text-center">Product Price</th>
+                    <th scope="col" class="text-center">Quantity</th>
+                    <th scope="col"class="text-center">total</th>
+                    <th scope="col-2" class="text-center">Status</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each products}}
+                  <tr class="" style="justify-content: center;">
+                    <td>{{indexing @index}}</td>
+                    <td class="text-center"><img src="/images/product/{{this.product.img.[0]}}" alt="" style="height: 80px; width: 70px;"><br>
+                    <h7 class="" >{{this.product.ProductName}}</h7><br>
+                    {{!-- <h7 class="" >{{this.product.Specs}}</h7><br>  --}}
+                    <h7 class="">{{this.product.color}}</h7>
+                    </td>
+                    {{!-- <td>{{this.product._id}}<td> --}}
+                    <td style="" class="text-center">{{this.product.ProductPrice}}</td>
+                    <td class="text-center">{{this.quantity}}</td>
+                    <td class="text-center">{{this.totalAmount}}</td>
+                          
+                              
+                              
+                                    
+                        {{#if this.cancelled}} 
+                        <td class="col-2">              
+                       
+                       
+
+                                 <h6 class="badge bg-danger" style="margin-left: 60px;">{{this.status}}</h6>
+
+                                 {{#checkPaymentMethod ../orderDetails.paymentmethod}}
+
+                                 <button class="btn btn-outline-success" style="margin-left: 40px;" type="button" onclick="refundApproveAfterCancel('{{../this.product.ProductPrice}}','{{../this.userId}}','{{../this._id}}','{{../this.product._id}}','{{../../orderDetails.paymentmethod}}')"><span>Refund</span><i class="bi bi-currency-dollar"></button></i>
+
+                                 {{else}}
+
+                                 <button class="btn btn-outline-success" hidden style="margin-left: 40px;" type="button" onclick="refundApproveAfterCancel('{{this.product.ProductPrice}}','{{this.userId}}','{{this._id}}','{{this.product._id}}','{{../orderDetails.paymentmethod}}')"><span>Refund</span><i class="bi bi-currency-dollar"></button></i>
+
+                                  {{/checkPaymentMethod}}
+                          <button class="btn btn-outline-success" hidden type="button" onclick="updateStatus('{{this._id}}','{{this.product._id}}')">submit</button>
+                        </td>
+                        {{else}}
+                          {{#if this.returnOrder}}
+                        <td class="col-3">              
+                        
+                       
+                              {{!-- <select class="form-select disabled" aria-label="Default select example"  id="inputGroupSelect04{{this.product._id}}"> --}}
+                                <h6 class="badge bg-success" style="margin-left: 100px;">{{this.status}}</h6>
+                            
+                          <button class="btn btn-outline-success" hidden type="button" onclick="updateStatus('{{this._id}}','{{this.product._id}}')">submit</button>
+                      
+                        </td>
+                        {{else}}
+                          {{#if this.approved}}
+                            <td class="col-3">              
+                        
+                       
+                              {{!-- <select class="form-select disabled" aria-label="Default select example"  id="inputGroupSelect04{{this.product._id}}"> --}}
+                                <h6 class="badge bg-success" style="margin-left: 100px;">{{this.status}}</h6>
+                            
+
+                            
+
+                            {{else}}
+                            {{#if this.refunded}}
+                            <td class="col-3">              
+                        
+                               <h6 class="badge bg-danger" style="margin-left: 100px;">Cancelled</h6>
+                              {{!-- <select class="form-select disabled" aria-label="Default select example"  id="inputGroupSelect04{{this.product._id}}"> --}}
+
+                                <h6 class="badge bg-success" style="margin-left: 100px;">{{this.status}}</h6>
+                            
+
+                          {{else}}
+                        <td class="col-3">              
+                        <div class="input-group ">
+                          
+                            <select class="form-select" aria-label="Default select example"  id="inputGroupSelect04{{this.product._id}}">
+                                <option selected >{{this.status}}</option>
+                            
+                              <option >Shipped</option>
+                              <option >Delivered</option>
+
+                            </select>
+                          <button class="btn btn-outline-success" type="button" onclick="updateStatus('{{this._id}}','{{this.product._id}}')">submit</button>
+                          
+                          <input type="text" class="" name="orderId" value="{{this._id}}" hidden>
+                        </div>
+                        </td>
+                        {{/if}}
+                       {{/if}} 
+                      {{/if}}
+                      {{/if}}               
+                                   
+                               
+                    
+                   
+                    
+                  </tr>
+                 {{/each}}  
+                </tbody>
+              </table>
+              <!-- End Table with hoverable rows -->
+
+            </div>
+          </div>
+        </main>  
+
+
+         <script src="/assets2/js/main.js"></script>
+        
+        <script>
+        function updateStatus (orderId,productId){
+         
+			
+			let status = document.getElementById('inputGroupSelect04'+productId).value
+			
+		
+		
+				 
+		   $.ajax({
+			  url:'/admin/orderStatus',
+			  data:{
+				  orderId:orderId,
+				  proId:productId,
+				  status:status
+			  },
+			  type:'POST',
+			  success:()=>{
+					  
+					location.reload()
+				  
+		  }
+		  }) 
+		
+		
+		  }
+
+       function refundApproveAfterCancel(amount,userId,orderId,proId,paymentmethod){
+        let status= "Refund Approved"
+    
+    if(confirm("are you sure?")){
+      $.ajax({
+        url:'/admin/approve-refund-after-cancel',
+        data:{
+			      amount:amount,
+			      status:status,
+            userId:userId,
+            orderId:orderId,
+            proId:proId,
+            paymentmethod:paymentmethod
+        },
+        method:'post',
+        success:()=>{
+          location.reload()
+        }
+      })
+    }
+}
+        </script>
+
+
+        
+
+  

@@ -1,0 +1,223 @@
+       <style>
+        .productName:{
+            text-decoration: dashed
+        }
+       </style>
+       
+       
+        <header class="header header-7">
+            {{!-- <div class="header-top bg-dark">
+                <div class="container-fluid">
+                    <div class="header-left">
+                        <div class="header-dropdown">
+                            <a href="#">Usd</a>
+                            <div class="header-menu">
+                                <ul>
+                                    <li><a href="#">Eur</a></li>
+                                    <li><a href="#">Usd</a></li>
+                                </ul>
+                            </div><!-- End .header-menu -->
+                        </div><!-- End .header-dropdown -->
+
+                        <div class="header-dropdown">
+                            <a href="#">Eng</a>
+                            <div class="header-menu">
+                                <ul>
+                                    <li><a href="#">English</a></li>
+                                    <li><a href="#">French</a></li>
+                                    <li><a href="#">Spanish</a></li>
+                                </ul>
+                            </div><!-- End .header-menu -->
+                        </div><!-- End .header-dropdown -->
+                    </div><!-- End .header-left -->
+
+                    <div class="header-right">
+                        <ul class="top-menu">
+                            <li>
+                                <a href="#">Links</a>
+                                <ul>
+                                    <li><a href="tel:#"><i class="icon-phone"></i>Call: +0123 456 789</a></li>
+                                    
+                                    <li><a href="about.html">About Us</a></li>
+                                    <li><a href="contact.html">Contact Us</a></li>
+                                    
+                                </ul>
+                            </li>
+                        </ul><!-- End .top-menu -->
+                    </div><!-- End .header-right -->
+                </div><!-- End .container-fluid -->
+            </div><!-- End .header-top --> --}}
+
+            <div class="header-middle sticky-header">
+                <div class="container-fluid">
+                    <div class="header-left">
+                        <button class="mobile-menu-toggler">
+                            <span class="sr-only">Toggle mobile menu</span>
+                            <i class="icon-bars"></i>
+                        </button>
+                        
+                        <a href="index.html" class="logo">
+                           <span> <img src="/images/product/mobmania.jpg" alt="Molla Logo" width="150" height="25" ><h3></h3></span>
+                        </a>
+
+                        <nav class="main-nav ">
+                            <ul class="menu sf-arrows" style="margin-left:;">
+                                <li class="megamenu-container ">
+                                    <a href="/userhome" class="">Home</a>
+                                </li>
+                                <li>
+                                    <a href="/products/?page=1" class="">Products</a>
+                                </li>
+                                <li>
+                                    <a href="/dashboard" class="" >My Account</a>
+                                    {{!-- <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="/myorders">Orders</a></li>
+                                     <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                    </ul> --}}
+                                </li>
+                                
+                                <li>
+                                    <a href="/view-wishlist">
+                                        {{#if wishlistCount}}
+                                     <span class="badge bg-secondary text-white">{{wishlistCount}}</span>
+                                     {{/if}}
+                                    </i>My Wishlist 
+                                    
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    {{#if logged}}
+                                    <a href="/logout" class="">Logout</a>
+                                        {{else}}
+                                    <a href="/login" class="">Login/Signup</a>
+                                    {{/if}}
+                                </li>
+                               
+                               
+                            </ul><!-- End .menu -->
+                        </nav><!-- End .main-nav -->
+                    </div><!-- End .header-left -->
+
+                    <div class="header-right">
+                        <div class="header-search header-search-extended header-search-visible">
+                            <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
+                            <form action="#" method="get">
+                                <div class="header-search-wrapper search-wrapper-wide">
+                                    <label for="q" class="sr-only"></label>
+                                    <input type="search" class="form-control"  onkeyup="searchProduct(this)" name="q" id="search-item" placeholder="Search product ..." required>
+                                    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                                </div><!-- End .header-search-wrapper -->
+                            </form>
+                                <section id="list-items" style=" position: absolute; max-width: 100%;  z-index: 5;  background-color: wheat; width: 500px; border-style: ; border-radius: 10px;  display: none;"> 
+                                        
+                                </section>
+
+                        </div><!-- End .header-search -->
+                      
+                        
+                        <div class="dropdown cart-dropdown">
+                            <a href="/cart" class="dropdown-toggle" role="button" >
+                                <i class="icon-shopping-cart"></i>
+                                {{#if countCart}}
+                                <span class="cart-count">{{countCart}}</span>
+                                {{/if}}
+                            </a>
+
+    
+                        </div><!-- End .cart-dropdown -->
+                    </div><!-- End .header-right -->
+                </div><!-- End .container-fluid -->
+            </div><!-- End .header-middle -->
+        </header><!-- End .header -->
+            <div class="mobile-menu-container">
+        <div class="mobile-menu-wrapper">
+            <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+            <form action="#" method="get" class="mobile-search">
+                <label for="mobile-search" class="sr-only">Search</label>
+                <input type="search" class="form-control" name="mobile-search"  id="mobile-search" placeholder="Search in..." required>
+                <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+            </form>
+            
+            <nav class="mobile-nav">
+                <ul class="mobile-menu">
+                
+                    <li class="active">
+                        <a href="/userhome" class="">Home</a>
+                    </li>
+                    <li>
+                        <a href="/products" class="">Products</a>
+                    </li>
+                    <li>
+                       
+                       <a href="/dashboard" class="dropdown" >My Account</a>
+                        <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/myorders">Orders</a></li>
+                        <li><a class="dropdown-item" href="#">My profile</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                         </ul>
+                    </li>
+                    <li>
+                        <a href="#">Pages</a>
+                    </li>
+                    <li>
+                        
+                        <a href="/view-wishlist"><i class="icon-heart-o"></i>My Wishlist 
+                        {{#if wishlistCount}}
+                         <span class="cart-count" >{{wishlistCount}}</span>
+                         {{/if}}
+                        </a>
+                       
+                    </li>
+                </ul>
+            </nav><!-- End .mobile-nav -->
+
+            <div class="social-icons">
+                <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+            </div><!-- End .social-icons -->
+        </div><!-- End .mobile-menu-wrapper -->
+    </div><!-- End .mobile-menu-container -->
+
+
+
+    <script>
+        function searchProduct(search){
+            const listSearchItems = document.getElementById('list-items')
+            let match = search.value.match(/^[a-zA-Z0-9 ]*/)
+            let match2 = search.value.match(/[ ]*/)
+            if(match2[0]===search.value){
+                listSearchItems.innerHTML = '';
+                return;
+            }
+            if(match[0]===search.value){
+                fetch('getSearchProducts',{
+                method:'post',
+                headers:{'Content-Type': 'application/json'},
+                body:JSON.stringify({searchItems: search.value})
+            }).then(res =>  res.json()).then(data=>{
+                 let search = data.search
+                 listSearchItems.innerHTML = ''
+                 if(search.length<1){
+                    listSearchItems.innerHTML = '<p>no results found</p>'
+                    return;
+                 }
+
+                 search.forEach((item,index)=>{
+                    if(index > 0) listSearchItems.innerHTML+='<hr>';
+                    listSearchItems.style.display = 'block'
+                    
+                    listSearchItems.innerHTML += `<a href="/product-view/${item._id}"><p class="text-black">${item.ProductName}</p></a>`
+                 })
+            })
+                 return;
+            }
+            listSearchItems.innerHTML = '';
+        }
+    </script>
+        
+

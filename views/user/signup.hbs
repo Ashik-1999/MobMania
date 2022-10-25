@@ -1,0 +1,187 @@
+
+<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Molla - Bootstrap eCommerce Template</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="assets/images/icons/site.html">
+    <link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="assets/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="assets/css/plugins/magnific-popup/magnific-popup.css">
+    <link rel="stylesheet" href="assets/css/plugins/jquery.countdown.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/skins/skin-demo-7.css">
+    <link rel="stylesheet" href="assets/css/demos/demo-7.css">
+
+
+<link rel='stylesheet' href='/stylesheets/style.css' />
+
+<body>
+
+  
+
+<div class="container">
+	<div class="screen-signup">
+		
+		<div class="screen__content">
+			{{#if loginErr}}
+                    
+                      <h5 class="text-center text-danger mt-5">{{loginErr}}</h5>
+                    
+
+                      {{/if}}
+			<form class="login" method="post" action="/signup-user" onsubmit="return validation()">
+				<div class="login__field">
+					<i class="login__icon fas fa-user"></i>
+					<input type="text" class="login__input" placeholder="Full name" name="name" id="Name" onkeyup="validateName()" >
+					<span class="border"></span>
+					<span id="name" class="text-danger"></span>
+				</div>
+				<div class="login__field">
+					<i class="login__icon fas fa-lock"></i>
+					<input type="email" class="login__input" placeholder="Mail id" name="email" id="Email" onkeyup="validEmail()" >
+					<span class="border"></span>
+					<span id="email" class="text-danger"></span>
+				</div>
+				<div class="login__field">
+					<i class="login__icon fas fa-lock"></i>
+					<input type="password" class="login__input" placeholder="Password" name="pw" onkeyup="validPassword()" id="password" >
+					<span class="border"></span>
+					<span id="passwords" class="text-danger"></span>
+				</div>
+                <div class="login__field">
+					<i class="login__icon fas fa-lock"></i>
+					<input type="password" class="login__input" placeholder="Confirm Password" name="pwconfirm"  id="Confirmpassword" >
+					<span class="border"></span>
+					<span id="Confirmpasswords" class="text-danger"></span>
+				</div>
+				<div class="login__field">
+					<i class="login__icon fas fa-lock"></i>
+					<input type="phone_number" class="login__input" placeholder="Number" name="number" id="phonenumber" onkeyup="validPhoneNumber()" >
+					<span class="border"></span>
+					<span id="phonenumbers" class="text-danger"></span>
+				</div>
+				<button class="button login__submit" type="submit">
+					<span class="button__text">Submit</span>
+					<i class="button__icon fas fa-chevron-right"></i>
+				</button>
+				
+
+			</form>
+			
+				<p class="text-center"> <a href="/login"
+                    class="fw-bold text-body"> Already  User? Login here</a></p>
+
+			
+		</div>
+		<div class="screen__background">
+			<span class="screen__background__shape screen__background__shape4"></span>
+			<span class="screen__background__shape screen__background__shape3"></span>		
+			<span class="screen__background__shape screen__background__shape2"></span>
+			<span class="screen__background__shape screen__background__shape1"></span>
+		</div>		
+	</div>
+</div>
+
+  
+</body>
+<script>
+    var errorName = document.getElementById('name')
+    var errorEmail = document.getElementById('email')
+    var errorPassword = document.getElementById('passwords')
+    var errorConfirmPassword = document.getElementById('Confirmpasswords')
+	var errorPhonenumber = document.getElementById('phonenumbers')
+    function validateName() {
+        const name = document.getElementById('Name').value;
+        if (name == "") {
+            errorName.innerHTML = 'Enter your Name'
+            return false
+        }
+        if (!name.match(/^[a-zA-Z ]*$/)) {
+            errorName.innerHTML = 'Number are not allowed'
+            return false
+        }
+         if (name.match(/^[ ]*$/)) {
+            errorName.innerHTML = 'enter your valid name'
+            return false
+        }
+        errorName.innerHTML = null
+        return true
+    }
+    function validEmail() {
+        const email = document.getElementById('Email').value
+        if (email == "") {
+            errorEmail.innerHTML = "enter you email address"
+            return false
+        }
+        if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+            errorEmail.innerHTML = 'enter a proper email address'
+            return false
+        }
+        errorEmail.innerHTML = null
+        return true
+    }
+    function validPassword() {
+        const psd = document.getElementById('password').value
+        if (psd == "") {
+            errorPassword.innerHTML = "enter a password"
+            return false
+        }
+        if (psd.length < 5) {
+			
+            errorPassword.innerHTML = "password should be more than five characters"
+            return false
+        }
+        errorPassword.innerHTML = null
+        return true
+    }
+    function validConfirmPassword() {
+        const Confirmpsd = document.getElementById('Confirmpassword').value
+        const psd = document.getElementById('password').value
+        if (Confirmpsd == "") {
+            errorConfirmPassword.innerHTML = "Confirm Your Password"
+            return false
+        }
+        if (Confirmpsd!==psd) {
+			
+            errorConfirmPassword.innerHTML = "Entered password and confirm password must be same"
+            return false
+        }
+        errorConfirmPassword.innerHTML = null
+        return true
+    }
+	 function validPhoneNumber() {
+        const mob = document.getElementById('phonenumber').value
+        if (mob == "") {
+            errorPhonenumber.innerHTML = "enter a phonenumber"
+            return false
+        }
+        if (mob.length < 10 || !mob.match(/^\d*$/)) {
+            errorPhonenumber.innerHTML = "Please Enter the valide phone number"
+            return false
+        }
+        errorPhonenumber.innerHTML = null
+        return true
+    }
+    function validation() {
+        if (!validateName() || !validEmail() || !validPassword() || !validPhoneNumber()|| !validConfirmPassword()) {
+            return false
+        }
+        return true
+    }
+</script>

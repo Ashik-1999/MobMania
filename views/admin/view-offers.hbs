@@ -1,0 +1,150 @@
+    <main id="main" class="main">
+          <div class="card">
+            <div class="card-body">
+              <div style="height: 60px; background-color: cornflowerblue; " class="pt-2">
+                <h2 class=" text-center text-white" >Manage Coupons</h2>
+              </div>
+              
+
+              <!-- Bordered Tabs Justified -->
+              <ul class="nav nav-tabs nav-tabs-bordered d-flex mt-5" id="borderedTabJustified" role="tablist">
+                <li class="nav-item flex-fill" role="presentation">
+                  <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-home" type="button" role="tab" aria-controls="home" aria-selected="true">View Offers</button>
+                </li>
+                <li class="nav-item flex-fill" role="presentation">
+                  <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Add Offers</button>
+                </li>
+               
+              </ul>
+              <div class="tab-content pt-2" id="borderedTabJustifiedContent">
+                <div class="tab-pane fade show active" id="bordered-justified-home" role="tabpanel" aria-labelledby="home-tab">
+                    <table class="table table-hover" id="myTable">
+                    <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Brand Name</th>
+                        <th scope="col">Offer Percentage</th>
+                        <th scope="col">Expiry Date</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each offerBrands}}
+                    <tr>
+                        {{!-- <th scope="row"><input type="checkbox" /></th> --}}
+                        <td>{{indexing @index}}</td>
+                        <td class="tm-product-name">{{this.brandname}}</td>
+                      
+                        <td>{{this.offer}}</td>
+                        <td>{{this.Expirydate}}</td>
+                        
+                        <td>
+                        <a href="/admin/edit-brand/{{this._id}}"><button type="button" class="btn btn-outline-primary ">Edit</button></a>
+                        
+                        <button class="btn btn-outline-danger text-uppercase"  onclick="deleteOffer('{{this._id}}')">
+                                Delete
+                            </button>
+                        </td>
+                    
+                        
+                    {{/each}} 
+                    </tbody>
+                </table>
+                </div>
+                <div class="tab-pane fade" id="bordered-justified-profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="col-md-6 ">
+                        <div class="card">
+                            <div class="card-body">
+                            
+
+                            <!-- Vertical Form -->
+                            <form class="row g-3 mt-5" method="post" action="/admin/add-offers" onsubmit="return validation()">
+                                <div class="col-12 ">
+                                <div class="form-group mb-3">
+                                  <label for="category" >Brand</label >
+                                    <select name="brand" id="brand" class="form-select" >
+                                      {{#each brands}}
+                                      <option value="{{this._id}}">{{this.brandname}}</option>
+                                       {{/each}}
+                                      {{!-- <option value="saab">Saab</option>
+                                      <option value="mercedes">Mercedes</option>
+                                      <option value="audi">Audi</option> --}}
+                                    </select>
+                                    <span id="Brand" class="text-danger"></span>
+                     
+                                </div>
+                                <div class="col-12">
+                                <label for="inputEmail4" class="form-label">Add Offer</label>
+                                
+                                <input type="tel" name="offer" class="form-control" id="offer" onkeyup="validateOffer()">
+                                <span id="Offer" class="text-danger"></span><br>
+                                
+                               <label for="inputAddress" class="form-label">Expiry Date</label>
+                                <input type="date" name="Expirydate" class="form-control" id="date" onkeyup="validateDate()">
+                                <span id="Date" class="text-danger"></span>
+                                </div>
+                                </div>
+                               
+                                <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                                </div>
+                            </form><!-- Vertical Form -->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+              </div><!-- End Bordered Tabs Justified -->
+
+            </div>
+          </div>
+    </main>
+
+
+    <script src="/assets2/js/main.js"></script>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="/javascripts/addOfferValidation.js"></script>
+
+
+   
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script>
+          function deleteOffer(brandId){
+          swal({
+          title: "Are you sure?",
+          text: "It will also delete the products of this category",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+             $.ajax({
+                      url:'/admin/delete-offer',
+                        data:{
+                          brandId:brandId
+                        },
+                      type:'POST',
+                      success:(response)=>{
+                          
+                            swal("Successfully deleted", {
+                              icon: "success",
+                            });
+                                            
+                              location.reload()
+                          
+                      }
+                  })
+            
+          } else {
+            swal("Your imaginary file is safe!");
+          }
+        });
+    }
+  </script>
+

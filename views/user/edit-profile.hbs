@@ -1,0 +1,51 @@
+            <div class="page-content">
+            	<div class="checkout">
+            	<div class="container">
+            		<div class="form-box" >
+						{{#if loginErrMessage}}
+                            <div>
+                            <h5 class="text-center text-danger mt-5">{{loginErrMessage}}</h5>
+                             </div> 
+                             {{/if}}
+                             {{#if successMessage}}
+                             <div>
+                            <h5 class="text-center text-success mt-5">{{successMessage}}</h5>
+                             </div> 
+                             {{/if}}
+            			
+
+							<div class="tab-content">
+							    
+							    <div class="" id="register-2" role="tabpanel" aria-labelledby="register-tab-2">
+							    	<form action="/edit-profile" method="post">
+							    		<div class="form-group">
+							    			<label for="register-password-2">Full Name *</label>
+							    			<input type="text" class="form-control" id="name" name="name" value="{{userData.name}}" required>
+							    		</div><!-- End .form-group -->
+
+							    		<div class="form-group">
+							    			<label for="email">Email id *</label>
+							    			<input type="email" class="form-control" id="email" name="email" value="{{userData.email}}" required>
+							    		</div><!-- End .form-group -->
+										<div class="form-group">
+							    			<label for="number">Mobile number *</label>
+							    			<input type="tel" class="form-control" id="number" name="number" value="{{userData.number}}" required>
+							    		</div><!-- End .form-group -->
+
+							    		<div class="form-footer">
+							    			<button type="submit" class="btn btn-outline-primary-2">
+			                					<span>Submit</span>
+			            						<i class="icon-long-arrow-right"></i>
+			                				</button>
+
+
+							    		</div><!-- End .form-footer -->
+							    	</form>
+
+							    </div><!-- .End .tab-pane -->
+							</div><!-- End .tab-content -->
+						
+            		</div><!-- End .form-box -->
+            	</div><!-- End .container -->
+                </div><!-- End .checkout -->
+            </div><!-- End .page-content -->

@@ -1,0 +1,236 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+            <script
+                src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+            <style>
+                th,
+                td {
+                    text - align: center;
+                    border: 1 px solid black;
+                    border - collapse: collapse;
+                }
+            </style>
+            <center>
+
+                <table class="table mt-5" id="weekly-table">
+                    <thead>
+                        <tr>
+
+                            <th>order_id</th>
+                            <th>date</th>
+                            <th>total</th>
+                            <th>status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr>
+
+                            <td>sssss</td>
+                            <td>{{this.date}}</td>
+                            <td>{{this.totalAmount}}</td>
+                            <td>{{this.status}}</td>
+                        </tr>
+                       
+                    </tbody>
+                </table>
+                <br />
+
+                <table hidden class="table mt-5" id="monthly-table">
+                    <thead>
+                        <tr>
+
+                            <th>order_id</th>
+                            <th>date</th>
+                            <th>total</th>
+                            <th>status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each monthlyReport}}
+                        <tr>
+
+                            <td>{{_id}}</td>
+                            <td>{{this.date}}</td>
+                            <td>{{this.totalAmount}}</td>
+                            <td>{{this.status}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+                
+                <br>
+
+                <table hidden class="table mt-5" id="yearly-table">
+                    <thead>
+                        <tr>
+                            <th>order_id</th>
+                            <th>date</th>
+                            <th>total</th>
+                            <th>status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each weeklyReport}}
+                        <tr>
+
+                            <td>{{_id}}</td>
+                            <td>{{this.date}}</td>
+                            <td>{{this.totalAmount}}</td>
+                            <td>{{this.status}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+
+            </center>
+            <script type="text/javascript">
+                
+                function weeklyReportPDF() {
+                    var doc = new jsPDF('p', 'pt', 'letter');
+                    var htmlstring = '';
+                    var tempVarToCheckPageHeight = 0;
+                    var pageHeight = 0;
+                    pageHeight = doc.internal.pageSize.height;
+                    specialElementHandlers = {
+                        // element with id of "bypass" - jQuery style selector  
+                        '#bypassme': function (element, renderer) {
+                            // true = "handled elsewhere, bypass text extraction"  
+                            return true
+                        }
+                    };
+                    margins = {
+                        top: 150,
+                        bottom: 60,
+                        left: 40,
+                        right: 40,
+                        width: 600
+                    };
+                    var y = 20;
+                    doc.setLineWidth(2);
+                    doc.text(200, y = y + 30, "Weekly Sales Report");
+                    doc.autoTable({
+                        html: '#weekly-table',
+                        startY: 70,
+                        theme: 'grid',
+                        columnStyles: {
+                            0: {
+                                cellWidth: 180,
+                            },
+                            1: {
+                                cellWidth: 80,
+                            },
+                            2: {
+                                cellWidth: 80,
+                            },
+                            {{!-- 3: {
+                                cellWidth: 80,
+                            } --}}
+                        },
+                        styles: {
+                            minCellHeight: 40
+                        }
+                    })
+                    doc.save('sales-weekly-report.pdf');
+                } 
+
+
+                function monthlyReportPDF() {
+                    var doc = new jsPDF('p', 'pt', 'letter');
+                    var htmlstring = '';
+                    var tempVarToCheckPageHeight = 0;
+                    var pageHeight = 0;
+                    pageHeight = doc.internal.pageSize.height;
+                    specialElementHandlers = {
+                        // element with id of "bypass" - jQuery style selector  
+                        '#bypassme': function (element, renderer) {
+                            // true = "handled elsewhere, bypass text extraction"  
+                            return true
+                        }
+                    };
+                    margins = {
+                        top: 150,
+                        bottom: 60,
+                        left: 40,
+                        right: 40,
+                        width: 600
+                    };
+                    var y = 20;
+                    doc.setLineWidth(2);
+                    doc.text(200, y = y + 30, "Monthly Sales Report");
+                    doc.autoTable({
+                        html: '#monthly-table',
+                        startY: 70,
+                        theme: 'grid',
+                        columnStyles: {
+                            0: {
+                                cellWidth: 180,
+                            },
+                            1: {
+                                cellWidth: 80,
+                            },
+                            2: {
+                                cellWidth: 80,
+                            },
+                            {{!-- 3: {
+                                cellWidth: 80,
+                            } --}}
+                        },
+                        styles: {
+                            minCellHeight: 40
+                        }
+                    })
+                    doc.save('sales-monthly-report.pdf');
+                } 
+
+
+                function yearlyReportPDF() {
+                    var doc = new jsPDF('p', 'pt', 'letter');
+                    var htmlstring = '';
+                    var tempVarToCheckPageHeight = 0;
+                    var pageHeight = 0;
+                    pageHeight = doc.internal.pageSize.height;
+                    specialElementHandlers = {
+                        // element with id of "bypass" - jQuery style selector  
+                        '#bypassme': function (element, renderer) {
+                            // true = "handled elsewhere, bypass text extraction"  
+                            return true
+                        }
+                    };
+                    margins = {
+                        top: 150,
+                        bottom: 60,
+                        left: 40,
+                        right: 40,
+                        width: 600
+                    };
+                    var y = 20;
+                    doc.setLineWidth(2);
+                    doc.text(200, y = y + 30, "Yearly Sales Report");
+                    doc.autoTable({
+                        html: '#yearly-table',
+                        startY: 70,
+                        theme: 'grid',
+                        columnStyles: {
+                            0: {
+                                cellWidth: 180,
+                            },
+                            1: {
+                                cellWidth: 80,
+                            },
+                            2: {
+                                cellWidth: 80,
+                            },
+                            {{!-- 3: {
+                                cellWidth: 80,
+                            } --}}
+                        },
+                        styles: {
+                            minCellHeight: 40
+                        }
+                    })
+                    doc.save('sales-yearly-report.pdf');
+                } 
+            </script>

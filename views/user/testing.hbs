@@ -1,0 +1,26 @@
+<div class="col-6 col-lg-3 order-lg-last">
+                                            
+                                            <div class="product-list-action">
+                                                
+                                               
+                                                   {{#if this.originalPrice}}
+                                                <div class="product-price">
+                                                    
+                                                      originalPrice:$<s>{{this.originalPrice}}</s>
+                                                       </div>
+                                                       <div class="product-price">
+                                                      offerPrice:${{checkGreater this.Price this.productOfferPrice}}
+                                                      </div>
+                                                         {{else}}
+                                                          {{#if this.productOfferPrice}}
+                                                           <div class="product-price">
+                                                             price:${{this.productOfferPrice}}                                                                                                                                                                                              
+                                                           </div><!-- End .product-price -->
+                                                          {{else}}
+                                                            <div class="product-price">
+                                                             price:${{this.Price}}                                                                                                                                                                                              
+                                                           </div><!-- End .product-price -->
+                                                           {{/if}}
+                                                         {{/if}}  
+                                                    
+                                                {{!-- </div><!-- End .product-price --> --}}

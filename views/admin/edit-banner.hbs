@@ -1,0 +1,71 @@
+<main id="main" class="main">
+    <div class="container tm-mt-big tm-mb-big">
+      <div class="row" style="width: 1400px;">
+        <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 mx-auto">
+          <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+            <div class="row">
+              <div class="col-12">
+                <h2 class="tm-block-title d-inline-block">Add Product</h2>
+              </div>
+            </div>
+            <div class="row tm-edit-product-row">
+              <div class="col-xl-6 col-lg-6 col-md-12">
+                <form action="/admin/banner-edit-submit/{{banner._id}}" class="tm-edit-product-form" method="post" onsubmit="return validation()" enctype="multipart/form-data" >
+                  <div class="form-group mb-3">
+                    <label for="name">Banner Name</label>
+                    <input id="Name" name="BannerName" type="text" class="form-control validate" value="{{banner.BannerName}}" onkeyup="validateProductName()" />
+                    <span id="name" class="text-danger"></span>
+                  </div>
+
+                 
+
+                   <div class="form-group mb-3">
+                    <label for="name" >image </label>
+                    <img src="/images/product/{{banner.img.[0]}}" style="height: 50px; width: 45px; margin-bottom: 20PX;"  id="imageView" ></td>
+                    <input type="file" class="custom-file-input" name="image" id="gallery-photo-add" onchange="viewImage(event)">
+                    
+                      {{!-- <input id=""  name="image"  type="file"  class="form-control validate"  onchange="viewImage(event)"   required/> --}}
+                      <span id="" class="text-danger"></span>
+                  </div>
+
+                   <div class="form-group mb-3">
+                    <label for="name">Discription 1</label>
+                    <input id="Name" name="discription1" value="{{banner.discription1}}" type="text" class="form-control validate" onkeyup="validateProductName()" />
+                    <span id="name" class="text-danger"></span>
+                  </div>
+                  
+                  <div class="form-group mb-3">
+                    <label for="name">Discription 2</label>
+                    <input id="Name" name="discription2" value="{{banner.discription2}}" type="text" class="form-control validate" onkeyup="validateProductName()" />
+                    <span id="name" class="text-danger"></span>
+                  </div>
+
+                   {{!-- <div class="form-group mb-3">
+                    <label for="name">Product Name</label>
+                    <input id="Name" name="ProductName" type="text" class="form-control validate" onkeyup="validateProductName()" />
+                    <span id="name" class="text-danger"></span>
+                  </div> --}}
+
+                  
+              </div>
+
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary btn-block text-uppercase">Edit banner</button>
+              </div>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</main>
+
+
+<script src="/assets2/js/main.js"></script>
+
+<script>
+    
+function viewImage(event){
+    document.getElementById("imageView").src=URL.createObjectURL(event.target.img.[0])
+  }
+</script>

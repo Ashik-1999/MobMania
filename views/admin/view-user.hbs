@@ -1,0 +1,194 @@
+{{!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Dashboard - NiceAdmin Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/assets2/img/favicon.png" rel="icon">
+  <link href="/assets2/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/assets2/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets2/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets2/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/assets2/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="/assets2/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="/assets2/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="/assets2/vendor/simple-datatables/style.css" rel="stylesheet"> --}}
+
+  <!-- Template Main CSS File -->
+  {{!-- <link href="assets/css/style.css" rel="stylesheet"> --}}
+  {{!-- <link rel="stylesheet" href="/stylesheets/style3.css"> --}}
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin - v2.3.1
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+{{!-- <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:400,700"
+    />
+     https://fonts.google.com/specimen/Roboto --}}
+    {{!-- <link rel="stylesheet" href="/stylesheets/style5.css" />
+     <!-- https://fontawesome.com/ -->
+    <link rel="stylesheet" href="/stylesheets/style6.css" />
+    <!-- https://getbootstrap.com/ -->
+    <link rel="stylesheet" href="/stylesheets/style4.css"> --}}
+
+     <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables.css">
+   <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables_themeroller.css">
+
+
+
+</head>
+
+
+
+
+
+    
+
+  
+    <main id="main" class="main">
+  
+
+
+            <div class="col-12">
+              <div class="card recent-sales overflow-auto">
+
+                
+
+                <div class="card-body">
+                  <h4 class="card-title">User Details</h4>
+
+                  <table class="table table-borderless datatable">
+                    <thead>
+                      <tr>
+                        <th scope="col">Sl no</th>
+                    <th scope="col">Full Name</th>
+                    <th scope="col"style="margin-left: px;">Email</th>
+                    
+                    <th scope="col"style="margin-left: px;">Mobile Number</th>
+                    <th scope="col" style="margin-left: px;">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {{#each users}}
+                  <tr>
+                    {{!-- {{#indexing @index}}
+                    
+                    <td style="margin-top: 50px;">{{../this}}</td>
+                   
+                    {{/indexing}} --}}
+                    
+                    <td style="margin-top: 50px;">{{indexing @index}}</td>
+               
+                    <td class="tm-product-name" style="margin-top: 50px;">{{this.name}}</td>
+                    <td style="margin-top: 50px;">{{this.email}}</td>
+                    <td style="margin-top: 50px;">{{this.number}}</td>
+                    
+                    <td style="margin-top: 50px;">
+                      {{#if this.signupstatus}}
+                
+                        <a href="/admin/block/{{this._id}}"><button class="btn btn-outline-danger">
+                            Block
+                        </button></a>
+
+                        {{else}}
+                    
+                        <a href="/admin/unblock/{{this._id}}"><button class="btn btn-outline-success">
+                            Unblock
+                        </button></a>
+                      {{/if}} 
+                  
+                          </td>
+                 </tr>       
+
+
+                    {{/each}}
+                    </tbody>
+                  </table>
+
+                {{!-- <nav aria-label="Page navigation">
+							    <ul class="pagination">
+                    
+							        <li class="page-item disabled" >
+							            <a class="page-link page-link-prev" href="/admin/viewUser/?page={{../previous.page}}" aria-label="Previous" tabindex="-1">
+							                <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
+							            </a>
+							        </li>
+
+									 <li class="page-item">
+							            <a class="page-link page-link-prev" href="/admin/viewUser/?page={{../previous.page}}" aria-label="Previous" tabindex="-1" >
+							                <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
+							            </a>
+							        </li>
+									
+							       
+									<li class="page-item " aria-current="page"><a class="page-link" href="/admin/viewUser/?page={{this}}">{{this}}</a></li>
+							        <li class="page-item disabled" >
+							            <a class="page-link page-link-next" href="/admin/viewUser/?page={{../next.page}}" aria-label="Next">
+							                Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+							            </a>
+							        </li>
+									 <li class="page-item">
+							            <a class="page-link page-link-next" href="/admin/viewUser/?page={{../next.page}}" aria-label="Next">
+							                Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+							            </a>
+							        </li>
+							    </ul>
+							</nav>` --}}
+
+                {{!-- <nav aria-label="Page navigation example" >
+                <ul class="pagination" style="justify-content: center;">
+                  <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                  <li class="page-item"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+              </nav><!-- End Basic Pagination --> --}}
+
+                </div>
+
+              </div>
+            </div><!-- End Recent Sales -->
+
+            
+
+
+
+      
+    </main>
+
+
+
+</section>
+{{!-- <script src="/assets2/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="/assets2/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets2/vendor/chart.js/chart.min.js"></script>
+  <script src="/assets2/vendor/echarts/echarts.min.js"></script>
+  <script src="/assets2/vendor/quill/quill.min.js"></script>
+  <script src="/assets2/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="/assets2/vendor/tinymce/tinymce.min.js"></script>
+  <script src="/assets2/vendor/php-email-form/validate.js"></script> --}}
+  <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script>
+   <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.min.js"></script>
+
+
+  <!-- Template Main JS File -->
+  <script src="/assets2/js/main.js"></script>
+
+

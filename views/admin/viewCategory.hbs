@@ -1,0 +1,95 @@
+     
+    <main id="main" class="main"> 
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">View Products</h5>
+
+              <!-- Table with hoverable rows -->
+              <table class="table table-hover" id="myTable">
+                <thead>
+                  <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Brand Name</th>
+                    <th scope="col">Thumpnail</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each brand}}
+                  <tr>
+                    {{!-- <th scope="row"><input type="checkbox" /></th> --}}
+                    <td>{{indexing @index}}</td>
+                    <td class="tm-product-name">{{this.brandname}}</td>
+                    <td><img src="/images/product/{{this.img.[0]}}" alt="" style="height: 70px; width: 70px;"></td>
+                    <td>{{this.status}}</td>
+                   
+                    
+                    <td>
+                      <a href="/admin/edit-brand/{{this._id}}"><button type="button" class="btn btn-outline-primary ">Edit</button></a>
+                      
+                      <button class="btn btn-outline-danger text-uppercase"  onclick="deleteBrandAlert('{{this._id}}')">
+                            Delete
+                        </button>
+                    </td>
+                  
+                    
+                  {{/each}} 
+                </tbody>
+              </table>
+
+               <a href="/admin/addcategory"><button type="button" class="btn btn-primary ">Add category</button></a>
+              <!-- End Table with hoverable rows -->
+
+            </div>
+          </div>
+    </main>  
+
+
+   
+
+    <script src="/assets2/js/main.js"></script>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <script>
+    function deleteBrandAlert(catId){
+      swal({
+          title: "Are you sure?",
+          text: "It will also delete the products of this category",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+             $.ajax({
+                      url:'/admin/delete-brand',
+                      data:{
+                        id:catId  
+                      },
+                      type:'POST',
+                      success:(response)=>{
+                          
+                            swal("Successfully deleted", {
+                              icon: "success",
+                            });
+                                            
+                              location.reload()
+                          
+                      }
+                  })
+            
+          } else {
+            swal("Your imaginary file is safe!");
+          }
+        });
+
+        
+     
+                 
+              
+
+    }
+  </script>

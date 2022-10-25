@@ -1,0 +1,124 @@
+{{!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Product Page - Admin HTML Template</title>
+
+  
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:400,700"
+    />
+    
+    https://fonts.google.com/specimen/Roboto  --}}
+    {{!-- <link rel="stylesheet" href="/stylesheets/style5.css" />
+    <!-- https://fontawesome.com/ -->
+    <link rel="stylesheet" href="/stylesheets/style6.css" />
+    <!-- https://getbootstrap.com/ -->
+    <link rel="stylesheet" href="/stylesheets/style4.css" /> --}}
+    <!--
+	Product Admin CSS Template
+	https://templatemo.com/tm-524-product-admin
+	-->
+
+
+ 
+
+     <main id="main" >  
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">View Products</h5>
+
+              <!-- Table with hoverable rows -->
+              <table class="table table-hover" id="myTable">
+                <thead>
+                  <tr>
+                    <th scope="col">SlNo</th>
+                    <th scope="col mt-5" style="">Name</th>
+                    <th scope="col">Id</th>
+              
+                    <th scope="col">Brand</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Stock</th>
+                    
+                    <th scope="col">Image</th>
+                    
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each products}}
+                  <tr>
+                    {{!-- <th scope="row"><input type="checkbox" /></th> --}}
+                    <td>{{indexing @index}}</td>
+                    <td class="tm-product-name">{{this.ProductName}}</td>
+                    <td>{{this._id}}</td>
+                   
+                    <td>{{this.brand}}</td>
+                    <td>{{this.ProductPrice}}</td>
+                    <td>{{this.stock}}</td>
+                    <td><img src="/images/product/{{this.img.[0]}}" style="height: 50px; width: 45px;" alt=""></td>
+                    
+                    <td>
+                      <a href="/admin/editProduct/{{this._id}}"><button type="button" class="btn btn-outline-primary btn-sm">Edit</button></a>
+                      {{#if this.block}}
+
+                      <a href="/admin/unBlockProduct/{{this._id}}"><button type="button" class="btn btn-outline-success btn-sm">UnBlock</button></a>
+                        {{else}}
+                      
+                      <a href="/admin/blockProduct/{{this._id}}"><button class="btn btn-outline-danger btn-block text-uppercase btn-sm">
+                            block
+                        </button></a>
+                    </td>
+                    {{/if}}
+                    
+                     {{/each}} 
+                </tbody>
+              </table>
+
+
+              <!-- End Table with hoverable rows -->
+
+            </div>
+            <a href="/admin/addproduct"><button type="button" class="btn btn-primary m-3">Add product</button></a>
+          </div>
+        </main>  
+
+
+
+
+     {{!-- <script src="/assets2/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="/assets2/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets2/vendor/chart.js/chart.min.js"></script>
+  <script src="/assets2/vendor/echarts/echarts.min.js"></script>
+  <script src="/assets2/vendor/quill/quill.min.js"></script>
+  <script src="/assets2/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="/assets2/vendor/tinymce/tinymce.min.js"></script>
+  <script src="/assets2/vendor/php-email-form/validate.js"></script> --}}
+
+  <!-- Template Main JS File -->
+  <script src="/assets2/js/main.js"></script>
+
+   <script src="js/jquery-3.3.1.min.js"></script>
+    <!-- https://jquery.com/download/ -->
+    <script src="js/bootstrap.min.js"></script> 
+           <script>
+   $(document).ready(function(){
+       $('#myTable').DataTable({
+        "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+        $('td:eq(0)', nRow).html(iDisplayIndexFull +1);
+    }
+});
+       
+    });
+</script>
+
+
+
+
+
+
+

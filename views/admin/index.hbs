@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Dashboard - NiceAdmin Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/assets2/img/favicon.png" rel="icon">
+  <link href="/assets2/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/assets2/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets2/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets2/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/assets2/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="/assets2/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="/assets2/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="/assets2/vendor/simple-datatables/style.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  {{!-- <link href="assets/css/style.css" rel="stylesheet"> --}}
+  <link rel="stylesheet" href="/stylesheets/style3.css">
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin - v2.3.1
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+
+
+  <!-- ======= Sidebar ======= -->
+  {{!-- <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link " href="index.html">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="" data-bs-toggle="" href="/admin/viewUser">
+          <i class="bi bi-menu-button-wide"></i><span>View Users</span>
+        </a>
+        
+      </li><!-- End Components Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="/admin/viewproducts">
+          <i class="bi bi-journal-text"></i><span>View Products</span>
+        </a>
+
+      </li><!-- End Forms Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-layout-text-window-reverse"></i><span>Tables</span>
+        </a>
+
+      </li><!-- End Tables Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-bar-chart"></i><span>Charts</span>
+        </a>
+
+      </li><!-- End Charts Nav -->
+
+    </ul>
+
+  </aside><!-- End Sidebar--> --}}
+
+
+
+    <table class="table table-hover" id="dailySale" hidden>
+      <thead>
+          <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Total Sale Amount</th>
+              <th scope="col">Total No of Order</th>
+
+          </tr>
+      </thead>
+      <tbody>
+          {{#each dailyReport}}
+
+          <tr>
+              {{!-- <th scope="row"><input type="checkbox" /></th> --}}
+
+              <td class="tm-product-name">{{this._id}}</td>
+              <td class="tm-product-name">{{this.DailySaleAmount}}</td>
+              <td class="tm-product-name">{{this.count}}</td>
+
+          </tr>
+      {{/each}}
+      <tr>
+          <td>
+              <h5 class="text-center"><strong>Total Sale Amount </strong>:{{dailyTotalAmount.[0].dailyTotalAmount}}</h5>
+          </td>
+      </tr>
+          
+      </tbody>
+      <button class="btn btn-outline-success" onclick="dailyReportPDF()"><i class="bi bi-download"></i>  Download</button>
+  </table>
+
+
+        <table class="table table-hover" id="monthlySale" hidden>
+          <thead>
+              <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Total Sale Amount</th>
+                  <th scope="col">Total No of Order</th>
+
+              </tr>
+          </thead>
+          <tbody>
+          {{#each monthlyReport}}
+              <tr>
+              {{!-- <th scope="row"><input type="checkbox" /></th> --}}
+
+                  <td class="tm-product-name">{{this._id}}</td>
+                  <td class="tm-product-name">{{this.MonthlySaleAmount}}</td>
+                  <td class="tm-product-name">{{this.count}}</td>
+
+              </tr>
+            {{/each}} 
+            <tr>
+              <td >
+                  <h5 class="text-center"><strong>Total Sale Amount </strong>:{{monthlyTotalAmount.[0].MonthlyTotalAmount}}</h5>
+              </td>
+            </tr> 
+          </tbody>
+          <button class="btn btn-outline-success" onclick="monthlyReportPDF()"><i class="bi bi-download"></i>  Download</button>
+
+
+
+      </table>
+
+
+       <table class="table table-hover" id="yearlySale" hidden>
+        <thead>
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Total Sale Amount</th>
+                <th scope="col">Total No of Order</th>
+
+            </tr>
+        </thead>
+        <tbody>
+        {{#each yearlyReport}}
+
+
+            <tr>
+                {{!-- <th scope="row"><input type="checkbox" /></th> --}}
+
+                <td class="tm-product-name">{{this._id}}</td>
+                <td class="tm-product-name">{{this.YearlySaleAmount}}</td>
+                <td class="tm-product-name">{{this.count}}</td>
+
+            </tr>
+        {{/each}} 
+        <tr>
+            <td>
+                <h5 class="text-center"><strong>Total Sale Amount </strong>:{{ yearlyTotalAmount.[0].yearlyTotalAmount}}</h5>
+            </td>
+        </tr>   
+        </tbody>
+        <button class="btn btn-outline-success" onclick="yearlyReportPDF()"><i class="bi bi-download"></i>  Download</button>
+    </table>
+
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Dashboard</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+      <div class="row">
+
+        <!-- Left side columns -->
+        <div class="col-lg-12">
+          <div class="row">
+
+            <!-- Sales Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-download"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Download Report</h6>
+                    </li>
+
+                    <li ><button onclick="dailyReportDownload()" class="dropdown-item">This Week</button></li>
+                    <li ><button onclick="monthlyReportDownload()" class="dropdown-item">This Month</button></li>
+                    <li ><button onclick="yearlyReportDownload()"  class="dropdown-item">This Year</button></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Sales <span>| Today</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-cart"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{todaySale}}</h6>
+                      <span class="text-muted small pt-2 ps-1">Total Revenue</span>   <span class="text-success small pt-1 fw-bold">{{todaySaleAmount.[0].TodayTotalAmount}}</span> 
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Sales Card -->
+
+            <!-- Revenue Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card revenue-card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" href="#">Today</a></li>
+                    <li><a class="dropdown-item" href="#">This Month</a></li>
+                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Revenue <span>| This Month</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-currency-dollar"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{getMonthlyAmount.[0].totalSaleAmount}}</h6>
+
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Revenue Card -->
+
+            <!-- Customers Card -->
+            <div class="col-xxl-4 col-xl-12">
+
+              <div class="card info-card customers-card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" href="#">Today</a></li>
+                    <li><a class="dropdown-item" href="#">This Month</a></li>
+                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Customers <span>| This Year</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-people"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{totalusers}}</h6>
+                      {{!-- <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span> --}}
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div><!-- End Customers Card -->
+
+
+
+            <!-- Reports -->
+            <div class="col-12">
+              <div class="card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+
+                    <li ><button onclick="weeklyReport()" class="dropdown-item">This Week</button></li>
+                    <li ><button onclick="monthlyReport()" class="dropdown-item">This Month</button></li>
+                    <li ><button onclick="yearlyReport()" class="dropdown-item">This Year</button></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Reports <span>/This Week</span></h5>
+
+                  <!-- Line Chart -->
+                   <canvas id="line-chart" width="800" height="200"></canvas>
+                 
+
+
+                  <!-- End Line Chart -->
+
+                </div>
+
+              </div>
+            </div><!-- End Reports -->
+
+            <!-- Recent Sales -->
+            <div class="col-12">
+              <div class="card recent-sales overflow-auto">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" href="#">Today</a></li>
+                    <li><a class="dropdown-item" href="#">This Month</a></li>
+                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                  </ul>
+                </div>
+
+
+
+              </div>
+            </div><!-- End Recent Sales -->
+
+            <!-- Top Selling -->
+            <div class="col-12">
+              <div class="card top-selling overflow-auto">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" href="#">Today</a></li>
+                    <li><a class="dropdown-item" href="#">This Month</a></li>
+                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                  </ul>
+                </div>
+
+                {{!-- <div class="card-body pb-0">
+                  <h5 class="card-title">Top Selling <span>| Today</span></h5>
+
+                  <table class="table table-borderless">
+                    <thead>
+                      <tr>
+                        <th scope="col">Preview</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Sold</th>
+                        <th scope="col">Revenue</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row"><a href="#"><img src="assets/img/product-1.jpg" alt=""></a></th>
+                        <td><a href="#" class="text-primary fw-bold">Ut inventore ipsa voluptas nulla</a></td>
+                        <td>$64</td>
+                        <td class="fw-bold">124</td>
+                        <td>$5,828</td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><a href="#"><img src="assets/img/product-2.jpg" alt=""></a></th>
+                        <td><a href="#" class="text-primary fw-bold">Exercitationem similique doloremque</a></td>
+                        <td>$46</td>
+                        <td class="fw-bold">98</td>
+                        <td>$4,508</td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><a href="#"><img src="assets/img/product-3.jpg" alt=""></a></th>
+                        <td><a href="#" class="text-primary fw-bold">Doloribus nisi exercitationem</a></td>
+                        <td>$59</td>
+                        <td class="fw-bold">74</td>
+                        <td>$4,366</td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><a href="#"><img src="assets/img/product-4.jpg" alt=""></a></th>
+                        <td><a href="#" class="text-primary fw-bold">Officiis quaerat sint rerum error</a></td>
+                        <td>$32</td>
+                        <td class="fw-bold">63</td>
+                        <td>$2,016</td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><a href="#"><img src="assets/img/product-5.jpg" alt=""></a></th>
+                        <td><a href="#" class="text-primary fw-bold">Sit unde debitis delectus repellendus</a></td>
+                        <td>$79</td>
+                        <td class="fw-bold">41</td>
+                        <td>$3,239</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </div> --}}
+
+              </div>
+            </div><!-- End Top Selling -->
+
+          </div>
+        </div><!-- End Left side columns -->
+
+        <!-- Right side columns -->
+        <div class="col-lg-6">
+
+          
+          <div class="card">
+            <div class="filter">
+              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                  <h6>Filter</h6>
+                </li>
+
+                <li><a class="dropdown-item" href="#">Today</a></li>
+                <li><a class="dropdown-item" href="#">This Month</a></li>
+                <li><a class="dropdown-item" href="#">This Year</a></li>
+              </ul>
+            </div>
+
+            <div class="card-body pb-0">
+              <h5 class="card-title">Website Traffic <span>| Today</span></h5>
+
+              <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
+
+              <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                  echarts.init(document.querySelector("#trafficChart")).setOption({
+                    tooltip: {
+                      trigger: 'item'
+                    },
+                    legend: {
+                      top: '5%',
+                      left: 'center'
+                    },
+                    series: [{
+                      name: 'Access From',
+                      type: 'pie',
+                      radius: ['40%', '70%'],
+                      avoidLabelOverlap: false,
+                      label: {
+                        show: false,
+                        position: 'center'
+                      },
+                      emphasis: {
+                        label: {
+                          show: true,
+                          fontSize: '18',
+                          fontWeight: 'bold'
+                        }
+                      },
+                      labelLine: {
+                        show: false
+                      },
+                      data: [
+                        {
+                          value: {{getCODcount.[0].count}},
+                          name: 'COD'
+                        },
+                        {
+                          value: {{razorpayCount.[0].count}},
+                          name: 'Razorpay'
+                        },
+                        {
+                          value: {{PaypalCount.[0].count}},
+                          name: 'Paypal'
+                        },
+                       
+                      ]
+                    }]
+                  });
+                });
+              </script>
+
+            </div>
+          </div><!-- End Website Traffic -->
+        </div>
+
+        <div class="col-lg-6">
+          <!-- News & Updates Traffic -->
+            <div class="card">
+              <div class="filter">
+                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                  <li class="dropdown-header text-start">
+                    <h6>Filter</h6>
+                  </li>
+
+                  <li><a class="dropdown-item" href="#">Today</a></li>
+                  <li><a class="dropdown-item" href="#">This Month</a></li>
+                  <li><a class="dropdown-item" href="#">This Year</a></li>
+                </ul>
+              </div>
+
+              <div class="card-body pb-0">
+                <h5 class="card-title">News &amp; Updates <span>| Today</span></h5>
+
+                <div class="news">
+                  <div class="post-item clearfix">
+                    <img src="assets/img/news-1.jpg" alt="">
+                    <h4><a href="#">Nihil blanditiis at in nihil autem</a></h4>
+                    <p>Sit recusandae non aspernatur laboriosam. Quia enim eligendi sed ut harum...</p>
+                  </div>
+
+                  <div class="post-item clearfix">
+                    <img src="assets/img/news-2.jpg" alt="">
+                    <h4><a href="#">Quidem autem et impedit</a></h4>
+                    <p>Illo nemo neque maiores vitae officiis cum eum turos elan dries werona nande...</p>
+                  </div>
+
+                  <div class="post-item clearfix">
+                    <img src="assets/img/news-3.jpg" alt="">
+                    <h4><a href="#">Id quia et et ut maxime similique occaecati ut</a></h4>
+                    <p>Fugiat voluptas vero eaque accusantium eos. Consequuntur sed ipsam et totam...</p>
+                  </div>
+
+                  <div class="post-item clearfix">
+                    <img src="assets/img/news-4.jpg" alt="">
+                    <h4><a href="#">Laborum corporis quo dara net para</a></h4>
+                    <p>Qui enim quia optio. Eligendi aut asperiores enim repellendusvel rerum cuder...</p>
+                  </div>
+
+                  <div class="post-item clearfix">
+                    <img src="assets/img/news-5.jpg" alt="">
+                    <h4><a href="#">Et dolores corrupti quae illo quod dolor</a></h4>
+                    <p>Odit ut eveniet modi reiciendis. Atque cupiditate libero beatae dignissimos eius...</p>
+                  </div>
+
+                </div><!-- End sidebar recent posts-->
+
+              </div>
+            </div><!-- End News & Updates -->
+
+          </div><!-- End Right side columns -->
+      </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+      <!-- All the links in the footer should remain intact. -->
+      <!-- You can delete the links only if you purchased the pro version. -->
+      <!-- Licensing information: https://bootstrapmade.com/license/ -->
+      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  
+
+  <!-- Template Main JS File -->
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+ <script src="/assets2/js/main.js"></script>
+
+
+
+  <script>
+
+
+/* <-----------------------------------------------------SALES REPORT GRAPH ADMIN----------------------------------------------------> */
+
+                    
+    var myChart;
+    var myChart2;
+    var myChart3;
+    var chart1;
+    var chart2;
+    var chart3;
+    window.onload = (event) => {
+      weeklyReport()
+    };
+
+
+/* <------------------------------------------------------Weekly report---------------------------------------------------------------> */
+
+
+                    
+    function weeklyReport(){
+
+      chart1=true
+
+
+      const data = {
+        labels: [
+          {{#each weeklySalesReport}}'{{_id}}',{{/each}}
+        ],
+        datasets: [{
+          label: 'Total Sale Amount',
+          data: [{{#each weeklySalesReport}}'{{totalSaleAmount}}',{{/each}}],
+          backgroundColor: [
+            'rgb(103 119 239)',
+            'rgb(102 187 106)',
+            'rgb(54, 162, 235)',
+            'rgb(255, 99, 132)'
+          ]
+        }]
+      };
+      // </block:setup>
+
+      // <block:config:0>
+      const config = {
+        type: 'line',
+        data: data,
+        options: {
+          aspectRatio:3,
+          responsive:true
+        }
+      };
+
+      if(chart2){
+         myChart2.destroy()  
+      }
+      if(chart3){
+        myChart3.destroy() 
+      }
+    
+      myChart = new Chart(document.getElementById('line-chart'), config)
+      
+       
+       
+    }  
+
+/* <---------------------------------------------------Weekly report ends------------------------------------------------------------> */
+
+
+
+
+/* <-----------------------------------------------------Monthly report---------------------------------------------------------------> */
+
+                    
+    function monthlyReport(){
+
+      chart2=true
+
+      const data = {
+        labels: [
+          {{#each monthlySalesReport}}'{{_id}}',{{/each}}
+        ],
+        datasets: [{
+          label: 'Total Sale Amount',
+          data: [{{#each monthlySalesReport}}'{{totalSaleAmount}}',{{/each}}],
+          backgroundColor: [
+            'rgb(103 119 239)',
+            'rgb(102 187 106)',
+            'rgb(54, 162, 235)',
+            'rgb(255, 99, 132)'
+          ]
+        }]
+      };
+      // </block:setup>
+
+      // <block:config:0>
+      const config = {
+        type: 'line',
+        data: data,
+        options: {
+          aspectRatio:3,
+          responsive:true
+        }
+      };            
+
+        if(chart1){
+        myChart.destroy() 
+      }
+      if(chart3){
+        myChart3.destroy() 
+      }
+         
+      myChart2 = new Chart(document.getElementById('line-chart'), config)
+      
+          
+     
+    } 
+
+
+/* <---------------------------------------------------Monthly report ends------------------------------------------------------------> */
+
+
+
+
+    function yearlyReport(){
+
+      chart3=true
+
+      const data = {
+        labels: [
+          {{#each yearlySalesReport}}'{{_id}}',{{/each}}
+        ],
+        datasets: [{
+          label: 'Total Sale Amount',
+          data: [{{#each yearlySalesReport}}'{{totalSaleAmount}}',{{/each}}],
+          backgroundColor: [
+            'rgb(103 119 239)',
+            'rgb(102 187 106)',
+            'rgb(54, 162, 235)',
+            'rgb(255, 99, 132)'
+          ]
+        }]
+      };
+      // </block:setup>
+
+      // <block:config:0>
+      const config = {
+        type: 'line',
+        data: data,
+        options: {
+          aspectRatio:3,
+          responsive:true
+        }
+      };            
+      if(chart1){
+        myChart.destroy() 
+      }
+      if(chart2){
+        myChart2.destroy() 
+      }
+
+     myChart3 = new Chart(document.getElementById('line-chart'), config)
+    } 
+
+
+/* <---------------------------------------------------Monthly report ends-----------------------------------------------------------> */
+
+
+
+</script>
+
+
+            <script type="text/javascript">
+                
+                function dailyReportDownload() {
+
+                    console.log("haiiiiiiiiiii")
+                    var doc = new jsPDF('p', 'pt', 'letter');
+                    var htmlstring = '';
+                    var tempVarToCheckPageHeight = 0;
+                    var pageHeight = 0;
+                    pageHeight = doc.internal.pageSize.height;
+                    specialElementHandlers = {
+                        // element with id of "bypass" - jQuery style selector  
+                        '#bypassme': function (element, renderer) {
+                            // true = "handled elsewhere, bypass text extraction"  
+                            return true
+                        }
+                    };
+                    margins = {
+                        top: 150,
+                        bottom: 60,
+                        left: 40,
+                        right: 40,
+                        width: 600
+                    };
+                    var y = 20;
+                    doc.setLineWidth(2);
+                    doc.text(200, y = y + 30, "Weekly Sales Report");
+                    doc.autoTable({
+                        html: '#dailySale',
+                        startY: 70,
+                        theme: 'grid',
+                        columnStyles: {
+                            0: {
+                                cellWidth: 180,
+                            },
+                            1: {
+                                cellWidth: 80,
+                            },
+                            2: {
+                                cellWidth: 80,
+                            },
+                            {{!-- 3: {
+                                cellWidth: 80,
+                            } --}}
+                        },
+                        styles: {
+                            minCellHeight: 40
+                        }
+                    })
+                    doc.save('sales-weekly-report.pdf');
+                } 
+
+
+                function monthlyReportDownload() {
+                    console.log("heloooooooooooooooooo")
+                    var doc = new jsPDF('p', 'pt', 'letter');
+                    var htmlstring = '';
+                    var tempVarToCheckPageHeight = 0;
+                    var pageHeight = 0;
+                    pageHeight = doc.internal.pageSize.height;
+                    specialElementHandlers = {
+                        // element with id of "bypass" - jQuery style selector  
+                        '#bypassme': function (element, renderer) {
+                            // true = "handled elsewhere, bypass text extraction"  
+                            return true
+                        }
+                    };
+                    margins = {
+                        top: 150,
+                        bottom: 60,
+                        left: 40,
+                        right: 40,
+                        width: 600
+                    };
+                    var y = 20;
+                    doc.setLineWidth(2);
+                    doc.text(200, y = y + 30, "Monthly Sales Report");
+                    doc.autoTable({
+                        html: '#monthlySale',
+                        startY: 70,
+                        theme: 'grid',
+                        columnStyles: {
+                            0: {
+                                cellWidth: 180,
+                            },
+                            1: {
+                                cellWidth: 80,
+                            },
+                            2: {
+                                cellWidth: 80,
+                            },
+                            {{!-- 3: {
+                                cellWidth: 80,
+                            } --}}
+                        },
+                        styles: {
+                            minCellHeight: 40
+                        }
+                    })
+                    doc.save('sales-monthly-report.pdf');
+                } 
+
+
+                function yearlyReportDownload() {
+                    console.log("haaai daaaaaa")
+                    var doc = new jsPDF('p', 'pt', 'letter');
+                    var htmlstring = '';
+                    var tempVarToCheckPageHeight = 0;
+                    var pageHeight = 0;
+                    pageHeight = doc.internal.pageSize.height;
+                    specialElementHandlers = {
+                        // element with id of "bypass" - jQuery style selector  
+                        '#bypassme': function (element, renderer) {
+                            // true = "handled elsewhere, bypass text extraction"  
+                            return true
+                        }
+                    };
+                    margins = {
+                        top: 150,
+                        bottom: 60,
+                        left: 40,
+                        right: 40,
+                        width: 600
+                    };
+                    var y = 20;
+                    doc.setLineWidth(2);
+                    doc.text(200, y = y + 30, "Yearly Sales Report");
+                    doc.autoTable({
+                        html: '#yearlySale',
+                        startY: 70,
+                        theme: 'grid',
+                        columnStyles: {
+                            0: {
+                                cellWidth: 180,
+                            },
+                            1: {
+                                cellWidth: 80,
+                            },
+                            2: {
+                                cellWidth: 80,
+                            },
+                            {{!-- 3: {
+                                cellWidth: 80,
+                            } --}}
+                        },
+                        styles: {
+                            minCellHeight: 40
+                        }
+                    })
+                    doc.save('sales-yearly-report.pdf');
+                } 
+            </script>
+
+
+</body>
+
+</html>

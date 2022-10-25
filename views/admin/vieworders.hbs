@@ -1,0 +1,61 @@
+        <main id="main" class="main">  
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Order Details</h5>
+
+              <!-- Table with hoverable rows -->
+              <table class="table table-hover" id="myTable">
+                <thead>
+                  <tr>
+                    <th scope="col">Slno</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    {{!-- <th scope="col">Quantity</th> --}}
+                    <th scope="col">Amount Paid</th>
+                    <th scope="col">Payment method</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Account</th>
+                    <th scope="col">Status</th>
+                    {{!-- <th scope="col">status</th> --}}
+                    <th scope="col">more</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {{#each orders}}
+                  <tr>
+                    <td>{{indexing @index}}</td>
+                    <td>{{this.deliveryDetails.customerName}}</td>
+                    <td>{{this.deliveryDetails.address.HouseName}},{{this.deliveryDetails.address.streetName}},{{this.deliveryDetails.address.city}},{{this.deliveryDetails.address.state}}
+                    
+                    </td>
+                    <td>{{this.TotalPayment}}</td>
+                    <td>{{this.paymentmethod}}</td>
+                    <td>{{this.date}}</td>
+                    <td>{{this.Account.email}}</td>
+                    <td>{{this.status}}</td>
+
+                    <td><a href="/admin/product-view-order/{{this._id}}"><button type="button" class="btn btn-outline-dark">More</button></a></td>
+                  </tr>
+                    {{/each}}
+                </tbody>
+              </table>
+                 
+              <!-- End Table with hoverable rows -->
+
+            </div>
+          </div>
+        </main>  
+
+
+         <script src="/assets2/js/main.js"></script>
+
+         <script>
+   $(document).ready(function(){
+       $('#myTable').DataTable({
+        "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+        $('td:eq(0)', nRow).html(iDisplayIndexFull +1);
+    }
+});
+       
+    });
+</script>
