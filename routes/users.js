@@ -9,7 +9,6 @@ const paypal = require('paypal-node-sdk');
 const { response } = require("express");
 
 
-
 /* <-------------------------------------------------------User open the site--------------------------------------------------------> */
 
 router.get("/", userController.userHome);
