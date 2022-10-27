@@ -38,13 +38,13 @@ var address
 
 let userHome = async function (req, res, next) {
     if (req.session.loggedIn) {
-      userHelpers.getCartCount(user._id).then(async (cartCount) => {
+      userHelpers.getCartCount(req.session.user._id).then(async (cartCount) => {
         countCart = cartCount;
   
-        let wishlistCount = await userHelpers.getWishlistCount(user._id);
+        let wishlistCount = await userHelpers.getWishlistCount(req.session.user._id);
         let banner=await adminHelpers.getBanners()
         let brand=await userHelpers. getCategoryBrands()
-        let recentlyViewed = await userHelpers.getRecentlyViewedProducts(user._id)
+        let recentlyViewed = await userHelpers.getRecentlyViewedProducts(req.session.user._id)
   
         adminHelpers.getallProducts().then((products) => {
           res.render("user/home", {userHeader: true,logged,products,countCart,wishlistCount,banner,brand,recentlyViewed});
@@ -295,12 +295,12 @@ let userHome = async function (req, res, next) {
     if (req.session.loggedIn) {
      
          let categories = await adminHelpers.getCategory()
-         let wishlistProducts = await userHelpers.wishlistProducts(user._id)
-         console.log(wishlistProducts,"wwwwwwwwwww")
+         let wishlistProducts = await userHelpers.wishlistProducts(req.session.user._id)
+         
         user = req.session.user
         
         
-        let cartData = await userHelpers.getCartProductList(user._id)
+        let cartData = await userHelpers.getCartProductList(req.session.user._id)
        
           res.render("user/products", {userHeader: true,logged,wishlistProducts,products,user,countCart,categories,next,previous,cartData,pages,pageCount,currentPage});
       
@@ -350,7 +350,7 @@ let userHome = async function (req, res, next) {
     if (req.session.loggedIn) {
       const { id } = req.params;
   
-      userHelpers.addToCart(id, user._id).then(() => {
+      userHelpers.addToCart(id, req.session.user._id).then(() => {
         res.redirect("/cart");
       }).catch((error)=>{
         res.status(500).render('user/error',{ message: error.message })
@@ -366,12 +366,12 @@ let userHome = async function (req, res, next) {
 
   let viewCart = async (req, res) => {
     if (req.session.loggedIn) {
-      userHelpers.getCartProducts(user._id).then((cartItems) => {
+      userHelpers.getCartProducts(req.session.user._id).then((cartItems) => {
         if (cartItems.noItem) {
           cartMessage = cartItems.NoCartMessage;
           res.render("user/cart", { userHeader: true, logged, cartMessage });
         } else {
-          userHelpers.getGrandTotal(user._id).then(async(totalPrice) => {
+          userHelpers.getGrandTotal(req.session.user._id).then(async(totalPrice) => {
   
             let total = totalPrice[0]
   
@@ -380,7 +380,7 @@ let userHome = async function (req, res, next) {
   
   
             if(total){
-              var couponPrice = await userHelpers.getCouponPrice(user._id,total)
+              var couponPrice = await userHelpers.getCouponPrice(req.session.user._id,total)
               
            var totalAfterCoupon = couponPrice[0]
          
@@ -411,7 +411,7 @@ let userHome = async function (req, res, next) {
   
       
      console.log(response.total[0])
-     response.couponOffer= await userHelpers.getCouponPrice(user._id,response.total[0])
+     response.couponOffer= await userHelpers.getCouponPrice(req.session.user._id,response.total[0])
      
      
       res.json(response);
@@ -435,16 +435,16 @@ let userHome = async function (req, res, next) {
   /* <--------------------------------------------------------User checkout----------------------------------------------------------> */
 
   let checkout = async (req, res) => {
-    let cartCount = await userHelpers.getCartCount(user._id)
+    let cartCount = await userHelpers.getCartCount(req.session.user._id)
     if(cartCount){
-      address = await userHelpers.getUserOrderAddress(user._id);
+      address = await userHelpers.getUserOrderAddress(req.session.user._id);
    
   
-      userHelpers.getCartProducts(user._id).then((cartItems) => {
-        userHelpers.getGrandTotal(user._id).then(async(total) => {
+      userHelpers.getCartProducts(req.session.user._id).then((cartItems) => {
+        userHelpers.getGrandTotal(req.session.user._id).then(async(total) => {
           
             let totalAmount = total[0].totalAmount;
-          let couponDiscount= await userHelpers.getCouponPrice(user._id,total[0])
+          let couponDiscount= await userHelpers.getCouponPrice(req.session.user._id,total[0])
           let couponOffer=couponDiscount[0]
         
             res.render('user/checkout',{userHeader:true,logged,cartItems,user,totalAmount,address,couponOffer})
@@ -467,7 +467,7 @@ let userHome = async function (req, res, next) {
 
   let addressInCheckout = (req,res)=>{
   
-    userHelpers.addExistingAddress(req.body,user._id).then((response)=>{
+    userHelpers.addExistingAddress(req.body,req.session.user._id).then((response)=>{
       
       res.json(response)
     }).catch((error)=>{
@@ -482,7 +482,7 @@ let userHome = async function (req, res, next) {
     userHelpers.getCartProductList(req.body.userId).then(async(  products)=>{
      let totalAmount= await userHelpers.getGrandTotal(req.body.userId)
      let totalamount = totalAmount[0].totalAmount;
-    let coupon= await userHelpers.getCouponPrice(user._id,totalAmount[0])
+    let coupon= await userHelpers.getCouponPrice(req.session.user._id,totalAmount[0])
     let couponApply=coupon[0]
      userHelpers.placeOrder(req.body, products,totalamount,couponApply).then(async(objorder) => {
       let prodData=objorder.productData 
@@ -495,7 +495,7 @@ let userHome = async function (req, res, next) {
         res.json({codSuccess: true });
       }
       else if(req.body.paymentmethod==="wallet"){
-        userHelpers.checkWalletAmount(totalamount,user._id).then(()=>{
+        userHelpers.checkWalletAmount(totalamount,req.session.user._id).then(()=>{
           res.json({walletSuccess: true });
         }).catch(()=>{
           res.json({walletSuccess:false})
@@ -593,7 +593,7 @@ let userHome = async function (req, res, next) {
       } else {
           console.log(JSON.stringify(payment));
 
-          userHelpers.afterPaymentSuccess(ordId,user._id).then((prodData)=>{
+          userHelpers.afterPaymentSuccess(ordId,req.session.user._id).then((prodData)=>{
               userHelpers. changePaymentStatus(ordId).then(()=>{
                 prodData.forEach(element => {
        
@@ -635,10 +635,10 @@ let userHome = async function (req, res, next) {
   /* <--------------------------------------------------------check wallet for order----------------------------------------------------------> */
 
   let checkWallet = async(req,res)=>{
-    let totalAmount= await userHelpers.getGrandTotal(user._id)
+    let totalAmount= await userHelpers.getGrandTotal(req.session.user._id)
     let totalamount = totalAmount[0].totalAmount;
     
-     userHelpers.walletCheck(user._id,totalamount).then(()=>{
+     userHelpers.walletCheck(req.session.user._id,totalamount).then(()=>{
       res.json({walletExist:true})
      }).catch(()=>{
       res.json({walletExist:false})
@@ -656,7 +656,7 @@ let userHome = async function (req, res, next) {
 /* <----------------------------------------------------------------------after razorpay--------------------------------------------> */
 
   let afterRazorpay = (req,res)=>{
-    userHelpers.afterPaymentSuccess(req.body['order[receipt]'],user._id).then((prodData)=>{
+    userHelpers.afterPaymentSuccess(req.body['order[receipt]'],req.session.user._id).then((prodData)=>{
   
       prodData.forEach(element => {
          
@@ -678,7 +678,7 @@ let userHome = async function (req, res, next) {
 
   let viewOrders = (req,res)=>{
     
-   userHelpers.getFullOrders(user._id).then((orders)=>{
+   userHelpers.getFullOrders(req.session.user._id).then((orders)=>{
     
     res.render('user/orders',{userHeader:true,orders,logged})
    }).catch((error)=>{
@@ -769,7 +769,7 @@ let userHome = async function (req, res, next) {
         if (req.session.loggedIn) {
           const { product } = req.body;
           console.log(product,"ssssssss")
-          userHelpers.addToWishlist(product, user._id).then(() => {
+          userHelpers.addToWishlist(product, req.session.user._id).then(() => {
             res.json({ login: true });
           }).catch((error)=>{
             res.status(500).render('user/error',{ message: error.message })
@@ -784,7 +784,7 @@ let userHome = async function (req, res, next) {
 
   let viewWishlist = (req, res) => {
   
-        userHelpers.getWishlistProducts(user._id).then((products) => {
+        userHelpers.getWishlistProducts(req.session.user._id).then((products) => {
       
       
       
@@ -817,7 +817,7 @@ let userHome = async function (req, res, next) {
 /* <--------------------------------------------------------view dashboard----------------------------------------------------------> */
 
     let userDashboard = (req, res) => {
-        userHelpers.getUserOrderAddress(user._id).then((address)=>{
+        userHelpers.getUserOrderAddress(req.session.user._id).then((address)=>{
           user = req.session.user
           res.render("user/dashboard", {userHeader: true,logged,loginErrMessage,successMessage,address,user});
         loginErrMessage = "";
@@ -846,7 +846,7 @@ let userHome = async function (req, res, next) {
 /* <--------------------------------------------------------submit change password----------------------------------------------------------> */
 
    let submitChangePassword =  (req, res) => {
-        userHelpers.changePassword(req.body, user._id).then((response) => {
+        userHelpers.changePassword(req.body, req.session.user._id).then((response) => {
          
             successMessage = response.successMessage;
             res.redirect("/changepassword");
@@ -863,8 +863,8 @@ let userHome = async function (req, res, next) {
 /* <--------------------------------------------------------edit user data----------------------------------------------------------> */
 
     let editUserData = (req, res) => {
-        console.log(user._id);
-        userHelpers.getUserDatatoEdit(user._id).then((userData) => {
+        console.log(req.session.user._id);
+        userHelpers.getUserDatatoEdit(req.session.user._id).then((userData) => {
           res.render("user/edit-profile", { userHeader: true, logged, userData,loginErrMessage,successMessage,});
           successMessage = "";
           loginErrMessage = "";
@@ -877,7 +877,7 @@ let userHome = async function (req, res, next) {
 /* <-------------------------------------------------------submit user data----------------------------------------------------------> */
 
     let submitEditUserData = (req, res) => {
-        userHelpers.editUserData(req.body, user._id).then((response) => {
+        userHelpers.editUserData(req.body, req.session.user._id).then((response) => {
       
           successMessage = response.successMessage;
             res.redirect("/userEdit");
@@ -893,7 +893,7 @@ let userHome = async function (req, res, next) {
 
 
     let deleteAddress = (req,res)=>{
-        userHelpers.deleteAddress(req.body,user._id).then((response)=>{
+        userHelpers.deleteAddress(req.body,req.session.user._id).then((response)=>{
          res.json(response)
         }).catch((error)=>{
          res.status(500).render('user/error',{ message: error.message })
@@ -902,9 +902,9 @@ let userHome = async function (req, res, next) {
 
     
     let viewWallet = (req,res)=>{
-        userHelpers.getWalletDetails(user._id).then(async(RefundData)=>{
+        userHelpers.getWalletDetails(req.session.user._id).then(async(RefundData)=>{
       
-          // let totalRefund = await userHelpers.getRefundTotal(user._id)
+          // let totalRefund = await userHelpers.getRefundTotal(req.session.user._id)
           // totalRefund=totalRefund[0]
           userData = req.session.user
             res.render('user/wallet',{userHeader: true, logged,RefundData,userData})
@@ -916,9 +916,9 @@ let userHome = async function (req, res, next) {
 
     let applyCoupon = async(req,res)=>{
   
-        let totalPrice= await userHelpers.getGrandTotal(user._id)
+        let totalPrice= await userHelpers.getGrandTotal(req.session.user._id)
          let total=totalPrice[0].totalAmount
-        userHelpers.applyCoupon(req.body,total,user._id).then((response)=>{
+        userHelpers.applyCoupon(req.body,total,req.session.user._id).then((response)=>{
           
         res.json(response)
           
@@ -931,7 +931,7 @@ let userHome = async function (req, res, next) {
     let deleteCoupon = (req,res)=>{
         let {couponId} = req.body
       
-        userHelpers.deleteCoupon(couponId,user._id).then(()=>{
+        userHelpers.deleteCoupon(couponId,req.session.user._id).then(()=>{
           res.json({delete:true})
         }).catch((error)=>{
           res.status(500).render('user/error',{ message: error.message })
@@ -952,12 +952,12 @@ let userHome = async function (req, res, next) {
           try{
             let filterProducts = await userHelpers.getFilterProducts(req.body)
             let categories = await adminHelpers.getCategory()
-            let wishlistProducts = await userHelpers.wishlistProducts(user._id)
+            let wishlistProducts = await userHelpers.wishlistProducts(req.session.user._id)
             
            user = req.session.user
       
          
-           let cartData = await userHelpers.getCartProductList(user._id)
+           let cartData = await userHelpers.getCartProductList(req.session.user._id)
           
              res.render("user/filterProducts", {userHeader: true,filterProducts,logged,wishlistProducts,user,countCart,categories,cartData,});
       
@@ -980,9 +980,9 @@ let userHome = async function (req, res, next) {
 
         if(req.session.user){
           let {prodId} = req.body
-         console.log(prodId,user._id)
+         console.log(prodId,req.session.user._id)
         
-        userHelpers.addToRecentlyViewed(prodId,user._id).then(()=>{
+        userHelpers.addToRecentlyViewed(prodId,req.session.user._id).then(()=>{
           res.json()
         })
         }
