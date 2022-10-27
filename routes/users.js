@@ -9,7 +9,6 @@ const paypal = require('paypal-node-sdk');
 const { response } = require("express");
 
 
-/* <-------------------------------------------------------User open the site--------------------------------------------------------> */
 
 router.get("/", userController.userHome);
 
@@ -153,7 +152,7 @@ router.get("/order-success", middleWare.loginCheck,userController.orderSuccessPa
 
 
 
-
+  
 
 
 /* <----------------------------------User functions after successful payment-------------------------------> */
