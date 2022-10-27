@@ -147,7 +147,7 @@ let userHome = async function (req, res, next) {
 
   let otpMobileNumberCheck = (req, res) => {
     req.session.Mobile = req.body.number;
-    Mob = req.session.Mobile
+   const Mob = req.session.Mobile
   
     userHelpers.getOTP(req.body).then((response) => {
      
@@ -157,8 +157,8 @@ let userHome = async function (req, res, next) {
           .then(() => {
             req.session.user = response.user;
             user = req.session.user;
-  
-            res.redirect("/otp");
+            console.log("number verified")
+            res.redirect("/otplogin/?number="+Mob);
           }).catch((error)=>{
             res.status(500).render('user/error',{ message: error.message })
           })
@@ -182,10 +182,13 @@ let userHome = async function (req, res, next) {
 
 
   let otpEnterPage = (req, res) => {
+   
+    let {number} = req.query
+    console.log(number)
     if (req.session.loggedIn) {
       res.redirect("/");
     } else {
-      res.render("user/otp", { loginErrMessage, userHeader: true });
+      res.render("user/otp", { loginErrMessage, userHeader: true ,number});
       loginErrMessage = "";
     }
   }
@@ -221,10 +224,12 @@ let userHome = async function (req, res, next) {
 
 
   let resendotp = (req, res) => {
-    if (Mob) {
+    const {number}= req.query
+    console.log(number,"resend")
+    if (number) {
       client.verify
         .services(serviceSID)
-        .verifications.create({ to: `+91${Mob}`, channel: "sms" })
+        .verifications.create({ to: `+91${number}`, channel: "sms" })
         .then(() => {
           res.redirect("/otp");
         }).catch((error)=>{
@@ -741,9 +746,9 @@ let userHome = async function (req, res, next) {
         
         userHelpers.returnOrder(req.body).then(()=>{
             let ordId = ObjectId(req.body.orderId)
-            console.log("haii")
+          
          adminHelpers. updateOrderStatus(req.body).then(()=>{
-            console.log("worked")
+         
            res.redirect('/order-product-details/?id='+ordId)
          })
          
@@ -1003,9 +1008,9 @@ let userHome = async function (req, res, next) {
     categoryProductView,
     otpLoginNumberInput,
     otpMobileNumberCheck,
-    otpGetCheck,
     otpEnterPage,
     otpCheck,
+    otpGetCheck,
     resendotp,
     userSignup,
     signupPostMethod,
