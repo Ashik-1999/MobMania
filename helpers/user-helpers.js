@@ -414,7 +414,7 @@ module.exports={
             }else{
                 if(count!=-1){
                     let stockCheck = await db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id:objectId(product)})
-                    if(quantity >= stockCheck.stock){
+                     if(quantity >= stockCheck.stock){
                         response.outOfStockErr=true
                         reject(response)
                     }else{

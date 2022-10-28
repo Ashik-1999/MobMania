@@ -35,6 +35,7 @@
     <meta name="theme-color" content="#ffffff">
     <!-- Plugins CSS File -->
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    
     <link rel="stylesheet" href="/assets/css/plugins/owl-carousel/owl.carousel.css">
     <link rel="stylesheet" href="/assets/css/plugins/magnific-popup/magnific-popup.css">
     <link rel="stylesheet" href="/assets/css/plugins/jquery.countdown.css">
@@ -43,6 +44,7 @@
   
     <link rel="stylesheet" href="/assets/css/plugins/nouislider/nouislider.css">
     <link rel="stylesheet" href="/assets/css/demos/demo-4.css">
+    
 
     {{#if returnOrder}}
      <link rel="stylesheet" href="/stylesheets/groupOrders.css">
@@ -101,9 +103,9 @@
                 
     {{/if}}         
     {{{body}}}
-    {{#if userHeader}}
+    {{#unless noFooter}}
       {{>userfooter}}
-    {{/if}}
+    {{/unless}}
 
 
   {{#if userHeader}}

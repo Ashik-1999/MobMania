@@ -65,7 +65,7 @@ app.get('/admin/*',(req,res)=>{
 })
 
 app.get('/*',(req,res)=>{
-  res.render('user/error')
+  res.render('user/error',{noFooter:true})
 })
 
 

@@ -31,7 +31,6 @@ let countCart;
 
 
 let successMessage = "";
-var address
 
 /* <--------------------------------------------------------------User open the site--------------------------------------------------> */
 
@@ -39,7 +38,7 @@ var address
 let userHome = async function (req, res, next) {
     if (req.session.loggedIn) {
       userHelpers.getCartCount(req.session.user._id).then(async (cartCount) => {
-        countCart = cartCount;
+        
   
         let wishlistCount = await userHelpers.getWishlistCount(req.session.user._id);
         let banner=await adminHelpers.getBanners()
@@ -47,7 +46,7 @@ let userHome = async function (req, res, next) {
         let recentlyViewed = await userHelpers.getRecentlyViewedProducts(req.session.user._id)
   
         adminHelpers.getallProducts().then((products) => {
-          res.render("user/home", {userHeader: true,logged,products,countCart,wishlistCount,banner,brand,recentlyViewed});
+          res.render("user/home", {userHeader: true,logged,products,cartCount,wishlistCount,banner,brand,recentlyViewed});
         }).catch((error)=>{
           res.status(500).render('user/error',{ message: error.message })
         })
@@ -78,7 +77,7 @@ let userHome = async function (req, res, next) {
     if (req.session.loggedIn) {
       res.redirect("/");
     } else {
-      res.render("user/login", { userHeader: true, loginErrMessage });
+      res.render("user/login", { userHeader: true, loginErrMessage ,noFooter:true});
       loginErrMessage = "";
     }
   }
@@ -112,9 +111,10 @@ let userHome = async function (req, res, next) {
     if(ObjectId.isValid(id)){
         if(req.session.loggedIn){
   
-            userHelpers.getCategoryProducts(id).then((brand)=>{
-        
-              res.render('user/category-products-view',{userHeader:true,logged,brand})
+            userHelpers.getCategoryProducts(id).then(async(brand)=>{
+              let cartCount = await userHelpers.getCartCount(req.session.user._id)
+              let wishlistCount = await userHelpers.getWishlistCount(req.session.user._id);
+              res.render('user/category-products-view',{userHeader:true,logged,brand,cartCount,wishlistCount})
             })}
             else{
               userHelpers.getCategoryProducts(id).then((brand)=>{
@@ -173,7 +173,7 @@ let userHome = async function (req, res, next) {
     if (req.session.loggedIn) {
       res.redirect("/");
     } else {
-      res.render("user/otp", { userHeader: true });
+      res.render("user/otp", { userHeader: true ,noFooter:true});
     }
   }
 
@@ -188,7 +188,7 @@ let userHome = async function (req, res, next) {
     if (req.session.loggedIn) {
       res.redirect("/");
     } else {
-      res.render("user/otp", { loginErrMessage, userHeader: true ,number});
+      res.render("user/otp", { loginErrMessage, userHeader: true ,number,noFooter:true});
       loginErrMessage = "";
     }
   }
@@ -248,7 +248,7 @@ let userHome = async function (req, res, next) {
     } else {
       res.render("user/signup", {
         userHeader: true,
-        loginErr: req.session.loginErr,
+        loginErr: req.session.loginErr,noFooter:true
       });
       req.session.loginErr = false;
     }
@@ -299,10 +299,11 @@ let userHome = async function (req, res, next) {
          
         user = req.session.user
         
-        
+        let cartCount = await userHelpers.getCartCount(req.session.user._id)
+        let wishlistCount = await userHelpers.getWishlistCount(req.session.user._id);
         let cartData = await userHelpers.getCartProductList(req.session.user._id)
        
-          res.render("user/products", {userHeader: true,logged,wishlistProducts,products,user,countCart,categories,next,previous,cartData,pages,pageCount,currentPage});
+          res.render("user/products", {userHeader: true,logged,cartCount,wishlistProducts,products,user,categories,next,previous,cartData,pages,pageCount,currentPage,wishlistCount});
       
      
     } else {
@@ -323,12 +324,15 @@ let userHome = async function (req, res, next) {
     const {id} = req.params
     if(ObjectId.isValid(id)){
         if (req.session.loggedIn) {
-        userHelpers.ProductView(id).then((view) => {
+        userHelpers.ProductView(id).then(async(view) => {
+          let cartCount = await userHelpers.getCartCount(req.session.user._id)
+          let wishlistCount = await userHelpers.getWishlistCount(req.session.user._id);
             res.render("user/product-view", {
             userHeader: true,
             logged,
             view,
-            countCart,
+            cartCount,
+            wishlistCount
             });
         });
         } else {
@@ -371,14 +375,12 @@ let userHome = async function (req, res, next) {
           cartMessage = cartItems.NoCartMessage;
           res.render("user/cart", { userHeader: true, logged, cartMessage });
         } else {
+
           userHelpers.getGrandTotal(req.session.user._id).then(async(totalPrice) => {
-  
+            let wishlistCount = await userHelpers.getWishlistCount(req.session.user._id);
+
             let total = totalPrice[0]
-  
-            console.log(total)
-            
-  
-  
+
             if(total){
               var couponPrice = await userHelpers.getCouponPrice(req.session.user._id,total)
               
@@ -388,7 +390,7 @@ let userHome = async function (req, res, next) {
             }
            
             
-            res.render("user/cart", {userHeader: true,logged,cartItems,user,total,totalAfterCoupon});
+            res.render("user/cart", {userHeader: true,logged,cartItems,user,total,totalAfterCoupon,wishlistCount});
           }).catch((error)=>{
             res.status(500).render('user/error',{ message: error.message })
           });
@@ -436,8 +438,9 @@ let userHome = async function (req, res, next) {
 
   let checkout = async (req, res) => {
     let cartCount = await userHelpers.getCartCount(req.session.user._id)
+    let wishlistCount = await userHelpers.getWishlistCount(req.session.user._id);
     if(cartCount){
-      address = await userHelpers.getUserOrderAddress(req.session.user._id);
+     let address = await userHelpers.getUserOrderAddress(req.session.user._id);
    
   
       userHelpers.getCartProducts(req.session.user._id).then((cartItems) => {
@@ -447,7 +450,7 @@ let userHome = async function (req, res, next) {
           let couponDiscount= await userHelpers.getCouponPrice(req.session.user._id,total[0])
           let couponOffer=couponDiscount[0]
         
-            res.render('user/checkout',{userHeader:true,logged,cartItems,user,totalAmount,address,couponOffer})
+            res.render('user/checkout',{userHeader:true,logged,cartItems,user,totalAmount,address,couponOffer,cartCount,wishlistCount})
          
          
           
@@ -686,9 +689,10 @@ let userHome = async function (req, res, next) {
 
   let viewOrders = (req,res)=>{
     
-   userHelpers.getFullOrders(req.session.user._id).then((orders)=>{
-    
-    res.render('user/orders',{userHeader:true,orders,logged})
+   userHelpers.getFullOrders(req.session.user._id).then(async(orders)=>{
+    let cartCount = await userHelpers.getCartCount(req.session.user._id)
+    let wishlistCount = await userHelpers.getWishlistCount(req.session.user._id);
+    res.render('user/orders',{userHeader:true,orders,logged,cartCount,wishlistCount})
    }).catch((error)=>{
     res.status(500).render('user/error',{ message: error.message })
   
@@ -698,9 +702,10 @@ let userHome = async function (req, res, next) {
 
   /* <--------------------------------------------------------view order details----------------------------------------------------------> */
 
-  let orderFullDetails = (req,res)=>{
+  let orderFullDetails =async(req,res)=>{
     const {id} = req.query
-    
+    let cartCount = await userHelpers.getCartCount(req.session.user._id)
+    let wishlistCount = await userHelpers.getWishlistCount(req.session.user._id);
     userHelpers.getOrders(id).then((orders) => {
      
       orders.forEach(element=>{
@@ -722,7 +727,7 @@ let userHome = async function (req, res, next) {
         }
       })
       
-      res.render("user/myorders", { userHeader: true, logged, orders });
+      res.render("user/myorders", { userHeader: true, logged, orders ,cartCount,wishlistCount});
     }).catch((error)=>{
       res.status(500).render('user/error',{ message: error.message })
     })
@@ -792,11 +797,11 @@ let userHome = async function (req, res, next) {
 
   let viewWishlist = (req, res) => {
   
-        userHelpers.getWishlistProducts(req.session.user._id).then((products) => {
+        userHelpers.getWishlistProducts(req.session.user._id).then(async(products) => {
       
-      
-      
-            res.render("user/wishlist", { userHeader: true, products, logged });
+          let cartCount = await userHelpers.getCartCount(req.session.user._id)
+         
+            res.render("user/wishlist", { userHeader: true, products, logged ,cartCount});
       
         }).catch((message)=>{
          
@@ -825,9 +830,11 @@ let userHome = async function (req, res, next) {
 /* <--------------------------------------------------------view dashboard----------------------------------------------------------> */
 
     let userDashboard = (req, res) => {
-        userHelpers.getUserOrderAddress(req.session.user._id).then((address)=>{
+        userHelpers.getUserOrderAddress(req.session.user._id).then(async(address)=>{
+          let cartCount = await userHelpers.getCartCount(req.session.user._id)
+          let wishlistCount = await userHelpers.getWishlistCount(req.session.user._id);
           user = req.session.user
-          res.render("user/dashboard", {userHeader: true,logged,loginErrMessage,successMessage,address,user});
+          res.render("user/dashboard", {userHeader: true,logged,loginErrMessage,successMessage,address,user,cartCount,wishlistCount});
         loginErrMessage = "";
         successMessage = "";
         }).catch((error)=>{
@@ -839,16 +846,20 @@ let userHome = async function (req, res, next) {
 
 /* <--------------------------------------------------------change password----------------------------------------------------------> */
 
-    let changePassword = (req, res) => {
+    let changePassword = async(req, res) => {
+      let cartCount = await userHelpers.getCartCount(req.session.user._id)
+      let wishlistCount = await userHelpers.getWishlistCount(req.session.user._id);
         res.render("user/change-password", {
           userHeader: true,
           logged,
           loginErrMessage,
           successMessage,
+          cartCount,
+          wishlistCount
         });
         loginErrMessage = "";
         successMessage = "";
-      }
+      }  
 
 
 /* <--------------------------------------------------------submit change password----------------------------------------------------------> */
@@ -870,10 +881,12 @@ let userHome = async function (req, res, next) {
 
 /* <--------------------------------------------------------edit user data----------------------------------------------------------> */
 
-    let editUserData = (req, res) => {
-        console.log(req.session.user._id);
+    let editUserData = async(req, res) => {
+      let cartCount = await userHelpers.getCartCount(req.session.user._id)
+      let wishlistCount = await userHelpers.getWishlistCount(req.session.user._id);
+
         userHelpers.getUserDatatoEdit(req.session.user._id).then((userData) => {
-          res.render("user/edit-profile", { userHeader: true, logged, userData,loginErrMessage,successMessage,});
+          res.render("user/edit-profile", { userHeader: true, logged, userData,loginErrMessage,successMessage,cartCount,wishlistCount});
           successMessage = "";
           loginErrMessage = "";
         }).catch((error)=>{
@@ -912,10 +925,10 @@ let userHome = async function (req, res, next) {
     let viewWallet = (req,res)=>{
         userHelpers.getWalletDetails(req.session.user._id).then(async(RefundData)=>{
       
-          // let totalRefund = await userHelpers.getRefundTotal(req.session.user._id)
-          // totalRefund=totalRefund[0]
-          userData = req.session.user
-            res.render('user/wallet',{userHeader: true, logged,RefundData,userData})
+          let cartCount = await userHelpers.getCartCount(req.session.user._id)
+          let wishlistCount = await userHelpers.getWishlistCount(req.session.user._id);
+         let userData = req.session.user
+            res.render('user/wallet',{userHeader: true, logged,RefundData,userData,cartCount,wishlistCount})
       
           
         })
@@ -964,10 +977,12 @@ let userHome = async function (req, res, next) {
             
            user = req.session.user
       
-         
+           let cartCount = await userHelpers.getCartCount(req.session.user._id)
+           let wishlistCount = await userHelpers.getWishlistCount(req.session.user._id);
+
            let cartData = await userHelpers.getCartProductList(req.session.user._id)
           
-             res.render("user/filterProducts", {userHeader: true,filterProducts,logged,wishlistProducts,user,countCart,categories,cartData,});
+             res.render("user/filterProducts", {userHeader: true,wishlistCount,cartCount,filterProducts,logged,wishlistProducts,user,countCart,categories,cartData,});
       
           }catch(error){
             res.status(500).render('user/error',{ message: error.message })
@@ -988,7 +1003,7 @@ let userHome = async function (req, res, next) {
 
         if(req.session.user){
           let {prodId} = req.body
-         console.log(prodId,req.session.user._id)
+        
         
         userHelpers.addToRecentlyViewed(prodId,req.session.user._id).then(()=>{
           res.json()
