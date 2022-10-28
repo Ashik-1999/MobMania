@@ -1,3 +1,17 @@
+<style>
+    .gradient-custom {
+    /* fallback for old browsers */
+    background: rgb(255 255 255);
+    
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to top left, rgb(255, 255, 255), rgba(246, 243, 255, 1));
+    
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to top left, rgb(255, 255, 255), rgba(246, 243, 255, 1))
+    }
+</style>
+
+
 <body>
     <div class="page-wrapper">
         
@@ -16,90 +30,142 @@
 	                </div><!-- End .container -->
                 </div><!-- End .checkout -->
             </div><!-- End .page-content -->
-            <div class="page-content">
-                <div class="container">
+            <section class="h-100 gradient-custom">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-12 col-xl-12">
+        <div class="card" style="border-radius: 10px;">
+          <div class="card-header px-4 py-5">
+            <h5 class="text-muted mb-0">Thanks for your Order, <span
+                style="color: #a8729a;">{{total.deliveryDetails.customerName}}</span>!</h5>
+          </div>
+          <div>
+            <h1 class='d-flex justify-content-center align-items-center' style="color: #585858;">Order Summary</h1>
+          </div>
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-center align-items-center mb-4">
+              <p class="lead fw-normal mb-0" style="color: #585858;">Receipt</p>
+            </div>
+            <div class="card shadow-0 border mb-4 ">
+              <div class="card-body">
+              <table class="table table-wishlist table-mobile">
+                
+               <thead >
+                    <tr >
+                        <th style="padding: 30px;">Product Image</th>
+                        
+                        
+                        <th style="padding: 30px;">Product Name</th>
+                        
+                        <th style="padding: 30px;">Price</th>
+                        <th style="padding: 30px;">Quantity</th>
+                        <th style="padding: 30px;">Payment Type</th>
+                        <th style="padding: 30px;">Status</th>
+                        
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                {{#each summary}}
+                <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
+                
+                <tr class="" >
+								<td class="product-col col-md-2" style="padding: 30px;">
+									<img src="/images/product/{{this.product.img.[0]}}" class="img-fluid" width="80px"
+                      alt="Phone">
+								</td>
+								
+                               
+                               
+                                    <td class="price-col">{{this.product.ProductName}}</td>
+                                    <td class="price-col" style="padding: 30px;">₹{{this.product.ProductPrice}}</td>
+                                    <td class="price-col" style="padding: 30px;">{{this.quantity}}</td>
+                                    <td class="price-col" style="padding: 30px;">{{../total.paymentmethod}}</td>
+								    <td class="action-col" style="padding: 30px;">{{../total.status}}</td>
+                                
 
-                	<h2 class="title text-center mb-2">Classic</h2><!-- End .title text-center -->
-        			<article class="entry entry-list">
-                        <div class="row align-items-center">
-                            <div class="col-md-4">
-                                <figure class="entry-media">
-                                    <a href="single.html">
-                                        <img src="assets/images/blog/listing/post-1.jpg" alt="image desc">
-                                    </a>
-                                </figure><!-- End .entry-media -->
-                            </div><!-- End .col-md-4 -->
+                              
+							</tr>
+                {{/each}}
+                </tbody>
+                </table>
 
-                            <div class="col-md-8">
-                                <div class="entry-body">
-                                    <div class="entry-meta">
-                                        <span class="entry-author">
-                                            by <a href="#">John Doe</a>
-                                        </span>
-                                        <span class="meta-separator">|</span>
-                                        <a href="#">Nov 22, 2018</a>
-                                        <span class="meta-separator">|</span>
-                                        <a href="#">2 Comments</a>
-                                    </div><!-- End .entry-meta -->
+              </div>
+            </div>
 
-                                    <h2 class="entry-title">
-                                        <a href="single.html">Cras ornare tristique elit.</a>
-                                    </h2><!-- End .entry-title -->
+        <div class="row justify-content-center">
 
-                                    <div class="entry-cats">
-                                        in <a href="#">Lifestyle</a>,
-                                        <a href="#">Shopping</a>
-                                    </div><!-- End .entry-cats -->
 
-                                    <div class="entry-content">
-                                        <p>Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Suspendisse potenti. Sed egestas ... </p>
-                                        <a href="single.html" class="read-more">Continue Reading</a>
-                                    </div><!-- End .entry-content -->
-                                </div><!-- End .entry-body -->
-                            </div><!-- End .col-md-8 -->
-                        </div><!-- End .row -->
-                    </article><!-- End .entry -->
+            <div class="col-lg-4 col-sm-6">
+                <div class="icon-box text-center">
+                  
+                    <div class="icon-box-content">
+                        {{#if total.couponApply}}
 
-        			<article class="entry entry-list">
-                        <div class="row align-items-center">
-                            <div class="col-md-4">
-                                <figure class="entry-media entry-video">
-                                    <a href="single.html">
-                                        <img src="assets/images/blog/listing/post-2.jpg" alt="image desc">
-                                    </a>
-                                </figure><!-- End .entry-media -->
-                            </div><!-- End .col-md-4 -->
+                            <p class="text-muted mb-0"><span class="font-weight-bold ml-5">Total Amount : </span> ₹{{total.TotalAmount}}</p>
+                            <p class="text-muted mb-0"><span class="font-weight-bold ml-5">Discount : </span> ₹{{total.TotalDiscount}}</p>
+                            <p class="text-muted mb-0"><span class="font-weight-bold ml-5">Amount Payed</span> : ₹{{total.TotalPayment}}</p>
+                        
+                           
+                           
+                            {{else}}
+                            <p class="text-muted mb-0"><span class="font-weight-bold ml-5">Total Amount : </span> ₹{{total.TotalAmount}}</p>
+                            <p class="text-muted mb-0"><span class="font-weight-bold ml-5">Discount : </span> ₹0</p>
+                            <p class="text-muted mb-0"><span class="font-weight-bold ml-5">Amount Payed</span> : ₹{{total.TotalPayment}}</p>
+                        
+                            
+                        {{/if}}
+                    </div><!-- End .icon-box-content -->
+                </div><!-- End .icon-box -->
+            </div><!-- End .col-lg-4 col-sm-6 -->
 
-                            <div class="col-md-8">
-                                <div class="entry-body">
-                                    <div class="entry-meta">
-                                        <span class="entry-author">
-                                            by <a href="#">John Doe</a>
-                                        </span>
-                                        <span class="meta-separator">|</span>
-                                        <a href="#">Nov 20, 2018</a>
-                                        <span class="meta-separator">|</span>
-                                        <a href="#">3 Comments</a>
-                                    </div><!-- End .entry-meta -->
 
-                                    <h2 class="entry-title">
-                                        <a href="single.html">Facilisis aliquam porttitor mauris sit  amet orci.</a>
-                                    </h2><!-- End .entry-title -->
 
-                                    <div class="entry-cats">
-                                        in <a href="#">Lifestyle</a>
-                                    </div><!-- End .entry-cats -->
+             <div class="col-lg-4 col-sm-6">
+                <div class="icon-box text-center">
+                   
+                    <div class="icon-box-content">
+                       <p class="text-muted mb-0"><span class="font-weight-bold ml-5">Purchase Date</span> : {{total.date}}</p>
+                       <p class="text-muted mb-0"><span class="font-weight-bold ml-5">Amount Payed</span> : ₹{{total.TotalPayment}}</p>
+                        
+                    </div><!-- End .icon-box-content -->
+                </div><!-- End .icon-box -->
+            </div><!-- End .col-lg-4 col-sm-6 -->
 
-                                    <div class="entry-content">
-                                        <p>Morbi purus libero, faucibus commodo quis, gravida id, est. Vestibulum volutpat, lacus a ultrices sagittis, mi neque euismod dui ... </p>
-                                        <a href="single.html" class="read-more">Continue Reading</a>
-                                    </div><!-- End .entry-content -->
-                                </div><!-- End .entry-body -->
-                            </div><!-- End .col-md-8 -->
-                        </div><!-- End .row -->
-                    </article><!-- End .entry -->
-                </div><!-- End .container -->
-            </div><!-- End .page-content -->
+            
+
+        <div class="col-lg-4 col-sm-6">
+                <div class="icon-box text-center">
+                   
+                    <div class="icon-box-content">
+                       <p>Delivery Address: {{total.deliveryDetails.address.HouseName}},{{total.deliveryDetails.address.streetName}}</p>
+              <p> <span style="margin-left:120px;"></span> {{total.deliveryDetails.address.landmark}},{{total.deliveryDetails.address.city}}
+              </p>
+              <p> <span style="margin-left:120px;"></span>
+                Pincode:{{total.deliveryDetails.address.HouseName}},State:{{total.deliveryDetails.address.state}},Phone:{{total.deliveryDetails.mobile}}</p>
+                    </div><!-- End .icon-box-content -->
+                </div><!-- End .icon-box -->
+        </div><!-- End .col-lg-4 col-sm-6 -->
+
+
+            
+
+        </div>
+
+          </div>
+          <div class="card-footer border-0 px-4 py-5"
+            style="background-color: #ffffff; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+            <h5 class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">Total
+              paid: <span class="h2 mb-0 ms-2">₹{{total.TotalPayment}}</span></h5>
+          </div>
+        
+    </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
 
         </main><!-- End .main -->
 

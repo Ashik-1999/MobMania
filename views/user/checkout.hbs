@@ -517,23 +517,23 @@
                 success:(response)=>{
                     alert(response)
                     if(response.codSuccess){
-                        location.href='/order-success'
+                        location.href='/order-success/?orderId='+response.insertId
                     }else if(response.walletSuccess){
-						location.href='/order-success'
+						location.href='/order-success/?orderId='+response.insertId
 					}
 					else if(response.razorpay){
 						alert("You are redirected to Razorpay")
-						razorpayPayment(response.response)
+						razorpayPayment(response.response,response.insertId)
 					}else{
 						
-						getPaypal(response.orderId)
+						getPaypal(response.insertId)
 					}
                     
                 }
             })
         })
 
-		function razorpayPayment(order){
+		function razorpayPayment(order,insertId){
 			var options = {
 					"key": "rzp_test_ce3llX9faSP5VO", // Enter the Key ID generated from the Dashboard
 					"amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
@@ -545,7 +545,7 @@
 					"handler": function (response){
 						
 
-						verifyPayment(response,order)
+						verifyPayment(response,order,insertId)
 					},
 					"prefill": {
 						"name": "Gaurav Kumar",
@@ -564,7 +564,7 @@
 
 		}
 
-		function verifyPayment(payment,order){
+		function verifyPayment(payment,order,insertId){
 			console.log(payment)
 			$.ajax({
 				url:'/verify-payment',
@@ -583,7 +583,7 @@
 							method:'post',
 							success:(response)=>{
 							
-							location.href='/order-success'
+							location.href='/order-success/?orderId='+insertId
 						}
 						})
 						
@@ -604,7 +604,7 @@
 				},
 				method:'post',
 				success:(response)=>{
-					alert("gdffgdfgfdgdfgdfgfg")
+					
 					location.href=response
 				}
 			})

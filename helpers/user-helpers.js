@@ -698,8 +698,7 @@ module.exports={
                 if(err){
                     console.log(err)
                 }else{
-                    console.log(options.receipt ,"'eeeeeeeeeeeeeeeeee")
-                    console.log(order + "ORDERRRRRRRRRRRR");
+                    
                     resolve(order)
                 }
                
@@ -733,10 +732,10 @@ module.exports={
             // console.log("sig received " ,req.body.response.razorpay_signature);
             // console.log("sig generated " ,expectedSignature);
             if(expectedSignature==paymentDetails['payment[razorpay_signature]']){
-                console.log("successsssssssss")
+               
                 resolve()
             }else{
-                console.log("failedddddddddddddddddd")
+                
                 reject()
             }
         })
@@ -845,6 +844,99 @@ module.exports={
         })
     },
 
+
+    getOrderSummary:(orderId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.ORDERS_COLLECTION).aggregate([
+                {
+                    $match:{_id:objectId(orderId)}
+                },
+
+                {
+                    $unwind:'$products'
+                },
+                 {
+                     $project:{
+                        item:'$products.item',
+                        quantity:'$products.quantity',
+                        status:'$products.status',
+                        date:1,
+                        TotalAmount:1,
+    
+                        TotalDiscount:1,
+                    
+                        TotalPayment:1
+                        
+                        
+                    
+                    }
+                 },
+                 {
+                     $lookup:{
+                         from:collection.PRODUCT_COLLECTION,
+                        localField:'item',
+                      foreignField:'_id',
+                       as:'product'
+                   }
+                 },
+                 
+                 {
+                    $project:{
+                      date:1, status:1,item:1,quantity:1,product:{$arrayElemAt:['$product',0]} ,TotalAmount:1,
+    
+                      TotalDiscount:1,
+                  
+                      TotalPayment:1
+                    }
+                 }, 
+
+                 {
+                    $addFields:{
+                         convertPrice: { $toInt:'$product.ProductPrice'},
+                        // convertPrice: { $toInt:'$product.ProductPrice'},
+                    }
+                 },
+                 {
+                    $project:{
+                        
+                       
+                        date:1,totalAmount:{$multiply:['$quantity','$convertPrice']},quantity:1,product:1,status:1,Totalprice:1,deliveryDetails:1,
+                        TotalAmount:1,
+    
+                        TotalDiscount:1,
+                    
+                        TotalPayment:1
+                        
+
+                    }
+                 },
+               
+
+            ]).toArray().then((response)=>{ 
+                
+               console.log(response,"summaryyy")
+                resolve(response)
+                 }).catch((err)=>{
+                    let error={}
+                    error.message = "Something went wrong"
+                    reject(error)
+                 })
+        })
+    },
+
+    
+    getGrandTotalForSummary:(orderId)=>{
+        return new Promise(async(resolve,reject)=>{
+            let total = await db.get().collection(collection.ORDERS_COLLECTION).findOne({_id:objectId(orderId)})
+            console.log(total)
+            resolve(total)
+        })
+    },
+
+
+    
+
+
     getFullOrders:(userId)=>{
         return new Promise(async(resolve,reject)=>{
             try{
@@ -922,6 +1014,7 @@ module.exports={
             
         })
     },
+
 
 
     returnOrder:(returnData)=>{
@@ -1379,7 +1472,7 @@ module.exports={
                         response.appliedCoupon=false
                         response.couponAppliedSuccess="Coupon Successfully applied"
                       let  couponDiscountpercentage = couponFind.discount
-                      let  discountPrice=(couponDiscountpercentage/100)*total
+                      let  discountPrice=Math.ceil((couponDiscountpercentage/100)*total)
                       let totalPriceAfterOffer=total-discountPrice
                       response.totalPriceAfterOffer=totalPriceAfterOffer
                       response.discountPrice=discountPrice
@@ -1474,7 +1567,7 @@ module.exports={
         console.log(userId )
       
         return new Promise((resolve,reject)=>{
-            db.get().collection(collection.USERS_COLLECTION).updateOne({_id:userId},
+            db.get().collection(collection.USERS_COLLECTION).updateOne({_id:objectId(userId)},
                 {$unset:{
                     couponId:objectId(couponId)
                 }

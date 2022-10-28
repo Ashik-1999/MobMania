@@ -486,30 +486,31 @@ let userHome = async function (req, res, next) {
     let couponApply=coupon[0]
      userHelpers.placeOrder(req.body, products,totalamount,couponApply).then(async(objorder) => {
       let prodData=objorder.productData 
+      let insertId = objorder.insertId
       if(prodData){    
         prodData.forEach(element => {     
           userHelpers.decrementStock(element)
         }); 
       }   
       if(req.body.paymentmethod==="COD"){     
-        res.json({codSuccess: true });
+        res.json({codSuccess: true ,insertId});
       }
       else if(req.body.paymentmethod==="wallet"){
         userHelpers.checkWalletAmount(totalamount,req.session.user._id).then(()=>{
-          res.json({walletSuccess: true });
+          res.json({walletSuccess: true ,insertId});
         }).catch(()=>{
           res.json({walletSuccess:false})
         })    
       }   
       else if(req.body.paymentmethod=="Online"){    
         userHelpers.useRazorpay(objorder.insertId,totalamount,couponApply).then((response)=>{
-            res.json({response,razorpay:true})
+            res.json({response,razorpay:true,insertId})
         })
       }
       else{
         
-        let orderId=objorder.insertId
-        res.json({paypal:true,orderId})
+        
+        res.json({paypal:true,insertId})
       }
      
   }).catch((error)=>{
@@ -571,7 +572,7 @@ let userHome = async function (req, res, next) {
   /* <--------------------------------------------------------paypal success----------------------------------------------------------> */
 
   let paypalSuccess = (req, res) => {
-    ordId=req.query.orderId
+   let ordId=req.query.orderId
     
     const payerId = req.query.PayerID;
     const paymentId = req.query.paymentId;
@@ -601,7 +602,7 @@ let userHome = async function (req, res, next) {
                   userHelpers.changeStatusPendingToPlaced(element)
                 }); 
               
-                 res.redirect('/order-success') 
+                 res.redirect('/order-success/?orderId='+ordId) 
               }).catch((error)=>{
                 res.status(500).render('user/error',{ message: error.message })
               })
@@ -614,7 +615,7 @@ let userHome = async function (req, res, next) {
   }
 
 
-  /* <--------------------------------------------------------verify razorpay----------------------------------------------------------> */
+/* <-------------------------------------------------------verify razorpay----------------------------------------------------------> */
 
   let verifyRazorpay = (req,res)=>{
     console.log(req.body)
@@ -649,7 +650,14 @@ let userHome = async function (req, res, next) {
   /* <--------------------------------------------------------order success page----------------------------------------------------------> */
 
   let orderSuccessPage =  (req, res) => {
-    res.render("user/placeOrder", { userHeader: true, logged });
+    let orderId=req.query.orderId
+    userHelpers.getOrderSummary(orderId).then((summary)=>{
+      userHelpers.getGrandTotalForSummary(orderId).then((total)=>{
+        res.render("user/placeOrder", { userHeader: true, logged, summary ,total });
+      })
+      
+    })
+    
   }
 
 
@@ -692,7 +700,7 @@ let userHome = async function (req, res, next) {
 
   let orderFullDetails = (req,res)=>{
     const {id} = req.query
-    console.log(id,";;;;;;;;;;;;;;;")
+    
     userHelpers.getOrders(id).then((orders) => {
      
       orders.forEach(element=>{
