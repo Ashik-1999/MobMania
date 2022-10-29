@@ -44,9 +44,11 @@ let userHome = async function (req, res, next) {
         let banner=await adminHelpers.getBanners()
         let brand=await userHelpers. getCategoryBrands()
         let recentlyViewed = await userHelpers.getRecentlyViewedProducts(req.session.user._id)
-  
+        let cartData = await userHelpers.getCartProductList(req.session.user._id)
+        let wishlistProducts = await userHelpers.wishlistProducts(req.session.user._id)
+        let user = req.session.user
         adminHelpers.getallProducts().then((products) => {
-          res.render("user/home", {userHeader: true,logged,products,cartCount,wishlistCount,banner,brand,recentlyViewed});
+          res.render("user/home", {userHeader: true,logged,products,cartCount,wishlistCount,banner,brand,recentlyViewed,user,cartData,wishlistProducts});
         }).catch((error)=>{
           res.status(500).render('user/error',{ message: error.message })
         })
@@ -297,7 +299,7 @@ let userHome = async function (req, res, next) {
          let categories = await adminHelpers.getCategory()
          let wishlistProducts = await userHelpers.wishlistProducts(req.session.user._id)
          
-        user = req.session.user
+       let user = req.session.user
         
         let cartCount = await userHelpers.getCartCount(req.session.user._id)
         let wishlistCount = await userHelpers.getWishlistCount(req.session.user._id);

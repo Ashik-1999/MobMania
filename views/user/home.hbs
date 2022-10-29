@@ -4,44 +4,19 @@
 
 <!-- molla/index-7.html  22 Nov 2019 09:56:39 GMT -->
 <head> 
-    {{!-- <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Molla - Bootstrap eCommerce Template</title>
-    <meta name="keywords" content="HTML5 Template">
-    <meta name="description" content="Molla - Bootstrap eCommerce Template">
-    <meta name="author" content="p-themes">
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png">
-    <link rel="manifest" href="/assets/images/icons/site.html">
-    <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
-    <link rel="shortcut icon" href="/assets/images/icons/favicon.ico">
-    <meta name="apple-mobile-web-app-title" content="Molla">
-    <meta name="application-name" content="Molla">
-    <meta name="msapplication-TileColor" content="#cc9966">
-    <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
-    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
 
-    
-    
-    <!-- Plugins CSS File -->
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/css/plugins/owl-carousel/owl.carousel.css">
-    <link rel="stylesheet" href="/assets/css/plugins/magnific-popup/magnific-popup.css">
-    <link rel="stylesheet" href="/assets/css/plugins/jquery.countdown.css">
-    <!-- Main CSS File -->
-    <link rel="stylesheet" href="/assets/css/style.css">
-    <link rel="stylesheet" href="/assets/css/skins/skin-demo-7.css">
-    <link rel="stylesheet" href="/assets/css/demos/demo-7.css">  --}}
 
 
        <link rel="stylesheet" href="assets/css/skins/skin-demo-7.css">
      <link rel="stylesheet" href="assets/css/demos/demo-7.css">
-</head> 
 
+</head> 
+<style>
+ .wishlistButton{ background-color: transparent;border:solid white 1px;border-radius: 100px } .heartIcon{ color: white; } .heartIcon:hover{ color: red }
+</style>
 <body>
     <div class="page-wrapper"> 
         <main class="main">
@@ -189,12 +164,32 @@
                                         </a>
 
                                         <div class="product-action-vertical">
-                                            <button  onclick="addToWishlist('{{this._id}}')"  class="btn-product-icon btn-wishlist btn-expandable"></button>
-                                            <a href="/product-view/{{this._id}}" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
+                                            {{!-- <button  onclick="addToWishlist('{{this._id}}')"  class="btn-product-icon btn-wishlist btn-expandable"></button> --}}
+                                            {{#wishlistHeartIcon this._id ../wishlistProducts}}
+											<button id="wishlistButton{{this._id}}" class="wishlistButton" onclick="addToWishlist('{{../this._id}}')"><i class="fa fa-heart heartIcon"  id="heartIcon{{../this._id}}" style="color:rgb(0, 115, 255);" aria-hidden="true"></i></button>
+
+											
+
+											{{else}}
+
+											<button id="wishlistButton{{../this._id}}" class="wishlistButton"  onclick="addToWishlist('{{../this._id}}')"><i class="fa fa-heart-o heartIcon" style="color:grey!important; "  id="heartIcon{{../this._id}}"  aria-hidden="true"></i></button>
+
+
+											
+											{{/wishlistHeartIcon}}
+                                            {{!-- <a href="/product-view/{{this._id}}" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a> --}}
                                         </div><!-- End .product-action-vertical -->
                                     {{#if this.stock}}
                                         <div class="product-action">
-                                            <a href="/addToCart/{{this._id}}" class="btn-product btn-cart"><span>add to cart</span></a>
+                                            {{#goToCart this._id ../user._id ../cartData}}
+												
+												        <a href="/cart" class="btn-product btn-cart"><span>Go to cart</span></a>
+
+                                                        {{else}}
+
+												         <a href="/addToCart/{{../this._id}}" class="btn-product btn-cart"><span>Add to cart</span></a>
+
+												      {{/goToCart}}
                                         </div><!-- End .product-action -->
                                         {{else}}
                                         <div class="product-action">
@@ -204,16 +199,22 @@
                                     </figure><!-- End .product-media -->
 
                                     <div class="product-body">
-                                        <h3 class="product-title"><a href="/product-view/{{this._id}}">Backpack</a></h3><!-- End .product-title -->
+                                        <h3 class="product-title"><a href="/product-view/{{this._id}}">{{this.ProductName}}</a></h3><!-- End .product-title -->
                                         <div class="product-price">
-                                           ₹ {{this.ProductPrice}}
+                                           {{#if this.brandDiscount}}
+
+													 <div class="product-price">
+                                                    <h5 class="product-price">₹ {{this.ProductPrice}}</h5>
+													 &nbsp&nbsp&nbsp <h6 class="text-danger product-price"><strike>₹ {{this.OriginalPrice}}</strike></h6>
+													  &nbsp&nbsp&nbsp&nbsp <h6 class="text-success product-price">{{this.DiscountPercentage}}% Off</h6>
+                                                	</div><!-- End .product-price -->
+													{{else}}
+                                                		<div class="product-price">
+                                                    		₹ {{this.ProductPrice}}
+                                               			 </div><!-- End .product-price -->
+										{{/if}}	
                                         </div><!-- End .product-price -->
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->
-                                            </div><!-- End .ratings -->
-                                            <span class="ratings-text">( 2 Reviews )</span>
-                                        </div><!-- End .rating-container -->
+                                        
                                     </div><!-- End .product-body -->
                                 </div><!-- End .product -->
 
@@ -276,7 +277,15 @@
                                         </div><!-- End .product-action-vertical -->
                                     {{#if this.product.stock}}
                                         <div class="product-action">
-                                            <a href="/addToCart/{{this.product._id}}" class="btn-product btn-cart"><span>add to cart</span></a>
+                                           {{#goToCart this.product._id ../user._id ../cartData}}
+												
+												        <a href="/cart" class="btn-product btn-cart"><span>Go to cart</span></a>
+
+                                                        {{else}}
+
+												         <a href="/addToCart/{{../this.product._id}}" class="btn-product btn-cart"><span>Add to cart</span></a>
+
+												      {{/goToCart}}
                                         </div><!-- End .product-action -->
                                         {{else}}
                                         <div class="product-action">
@@ -288,14 +297,20 @@
                                     <div class="product-body">
                                         <h3 class="product-title"><a href="/product-view/{{this.product._id}}">{{this.product.ProductName}}</a></h3><!-- End .product-title -->
                                         <div class="product-price">
-                                           ₹ {{this.product.ProductPrice}}
+                                          {{#if this.product.brandDiscount}}
+
+													 <div class="product-price">
+                                                    <h5 class="product-price">₹ {{this.product.ProductPrice}}</h5>
+													 &nbsp&nbsp&nbsp <h6 class="text-danger product-price"><strike>₹ {{this.product.OriginalPrice}}</strike></h6>
+													  &nbsp&nbsp&nbsp&nbsp <h6 class="text-success product-price">{{this.product.DiscountPercentage}}% Off</h6>
+                                                	</div><!-- End .product-price -->
+													{{else}}
+                                                		<div class="product-price">
+                                                    		₹ {{this.product.ProductPrice}}
+                                               			 </div><!-- End .product-price -->
+										{{/if}}	
                                         </div><!-- End .product-price -->
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->
-                                            </div><!-- End .ratings -->
-                                            <span class="ratings-text">( 2 Reviews )</span>
-                                        </div><!-- End .rating-container -->
+                                        
                                     </div><!-- End .product-body -->
                                 </div><!-- End .product -->
 

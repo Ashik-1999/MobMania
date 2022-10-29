@@ -94,29 +94,7 @@
 										
                                         <div class="col-6 col-lg-3 order-lg-last">
                                             <div class="product-list-action">
-												{{!-- {{#if this.brandDiscount}}
-
-													 <div class="product-price"> --}}
-                                                    {{!-- <h5 class="product-price">₹ {{this.ProductPrice}}</h5> --}}
-													 {{!-- <h5 class="product-price">₹ {{checkGreater this.ProductPrice this.productOfferPrice}}</h5>
-													  --}}
-														 
-													 {{!-- &nbsp&nbsp&nbsp <h6 class="text-danger"><strike>₹ {{this.OriginalPrice}}</strike></h6>
-													 
-													  &nbsp&nbsp&nbsp&nbsp <h6 class="text-success">{{checkGreaterPerc this.DiscountPercentage this.Offers}}% Off</h6>
-                                                	</div><!-- End .product-price -->
-													{{else}}
-														{{#if this.productOfferPrice}}
-															<div class="product-price">
-                                                    		₹ {{this.productOfferPrice}}
-															&nbsp&nbsp&nbsp&nbsp <h6 class="text-success">{{this.Offers}}% Off</h6>
-                                               			 </div><!-- End .product-price -->
-														 {{else}}
-                                                		<div class="product-price">
-                                                    		₹ {{this.ProductPrice}}
-                                               			 </div><!-- End .product-price -->
-														 {{/if}}
-													{{/if}}	  --}}
+												
 
 
 												{{#if this.brandDiscount}}
@@ -175,14 +153,14 @@
 											{{#wishlistHeartIcon this._id ../wishlistProducts}}
 											<button id="wishlistButton{{this._id}}" class="wishlistButton" onclick="addToWishlist('{{../this._id}}')"><i class="fa fa-heart heartIcon"  id="heartIcon{{../this._id}}" style="color:rgb(0, 115, 255);" aria-hidden="true"></i></button>
 
-											{{!-- <button class="btn-product btn-wishlist" id="wishlist" style="color:rgb(0, 115, 255);"  onclick="addToWishlist('{{this._id}}')"></button> --}}
+											
 
 											{{else}}
 
 											<button id="wishlistButton{{../this._id}}" class="wishlistButton"  onclick="addToWishlist('{{../this._id}}')"><i class="fa fa-heart-o heartIcon" style="color:grey!important; "  id="heartIcon{{../this._id}}"  aria-hidden="true"></i></button>
 
 
-											{{!-- <button class="btn-product btn-wishlist" id="wishlist"   onclick="addToWishlist('{{this._id}}')"></button> --}}
+											
 											{{/wishlistHeartIcon}}
                                             <div class="product-body product-action-inner">
                                                 {{!-- <a href="" class="btn-product btn-wishlist" title="Add to wishlist"> --}}

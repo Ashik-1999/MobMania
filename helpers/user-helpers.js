@@ -1060,7 +1060,7 @@ module.exports={
 
     addToWishlist:(proId,userId)=>{
 
-     
+
        
         let product=proId
         
@@ -1069,11 +1069,12 @@ module.exports={
             
             let findWishlist=await db.get().collection(collection.WISHLIST_COLLECTION).findOne({user:objectId(userId)})
            
+            
             if(findWishlist){
-                let prodExist=findWishlist.products.findIndex(product=> product==objectId(product))
+                let prodExist=findWishlist.products.findIndex((product)=>product==objectId(product))
                 
                 if(prodExist!=-1){
-                 
+                    
                     db.get().collection(collection.WISHLIST_COLLECTION)
                     .updateOne({user:objectId(userId)},
                     {
@@ -1089,10 +1090,11 @@ module.exports={
                     reject(error)
                 })
                 }else{
+                    
                     db.get().collection(collection.WISHLIST_COLLECTION)
                     .updateOne({user:objectId(userId)},
                     {
-                        $push:{products:objectId(product)}
+                        $addToSet:{products:objectId(product)}
                     }
                     ).then(()=>{
                    
