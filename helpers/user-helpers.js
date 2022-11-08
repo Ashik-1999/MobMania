@@ -211,6 +211,23 @@ module.exports={
         })
     },
 
+    getProducts:()=>{
+        
+        return new Promise(async(resolve,reject)=>{
+            try{
+                let products= await db.get().collection(collection.PRODUCT_COLLECTION).find({block:false}).toArray()
+         
+         resolve(products)
+         
+            }catch(err){
+                let error={}
+                error.message = "Something went wrong"
+                reject(error)
+            }
+         
+        })
+    },
+
      ProductView:(obId)=>{
         return new Promise((resolve,reject)=>{
             try{

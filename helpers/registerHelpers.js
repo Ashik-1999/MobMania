@@ -19,7 +19,7 @@ module.exports={
       },
     
         wishlistHeartIcon:(productId,wishlistArray,options)=>{
-            console.log(productId,wishlistArray,"ppppuuuccc")
+            
           if(wishlistArray){
               function doesAnyWishlistIdMatch(wishlistProducts){
                 

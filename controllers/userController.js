@@ -58,7 +58,7 @@ let userHome = async function (req, res, next) {
     } else {
       let banner=await adminHelpers.getBanners()
       let brand=await userHelpers. getCategoryBrands()
-      adminHelpers.getallProducts().then((products) => {
+      userHelpers.getProducts().then((products) => {
         res.render("user/home", { userHeader: true, products,banner,brand });
       }).catch((error)=>{
         res.status(500).render('user/error',{ message: error.message })    })
@@ -538,8 +538,8 @@ let userHome = async function (req, res, next) {
           "payment_method": "paypal"
       },
       "redirect_urls": {
-          "return_url": "http://localhost:3000/success/?orderId="+orderId,
-          "cancel_url": "http://localhost:3000/cancel"
+          "return_url": "https://mobmania.ga/success/?orderId="+orderId,
+          "cancel_url": "https://mobmania.ga/cancel"
       },
       "transactions": [{
           // "item_list": {
@@ -623,7 +623,7 @@ let userHome = async function (req, res, next) {
 /* <-------------------------------------------------------verify razorpay----------------------------------------------------------> */
 
   let verifyRazorpay = (req,res)=>{
-    console.log(req.body)
+   
     userHelpers.verifyPayment(req.body).then(()=>{
       userHelpers.changePaymentStatus(req.body['order[receipt]']).then(()=>{
         console.log("payment successfull")

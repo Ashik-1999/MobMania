@@ -30,11 +30,7 @@
                                 </li>
                                 <li>
                                     <a href="/dashboard" class="" >My Account</a>
-                                    {{!-- <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="/myorders">Orders</a></li>
-                                     <li><a class="dropdown-item" href="#">Another action</a></li>
-                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                    </ul> --}}
+                                    
                                 </li>
                                 
                                 <li>
@@ -104,32 +100,33 @@
             <nav class="mobile-nav">
                 <ul class="mobile-menu">
                 
-                    <li class="active">
+                    <li class="megamenu-container ">
                         <a href="/userhome" class="">Home</a>
                     </li>
                     <li>
-                        <a href="/products" class="">Products</a>
+                        <a href="/products/?page=1" class="">Products</a>
                     </li>
                     <li>
-                       
-                       <a href="/dashboard" class="dropdown" >My Account</a>
-                        <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/myorders">Orders</a></li>
-                        <li><a class="dropdown-item" href="#">My profile</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                         </ul>
-                    </li>
-                    <li>
-                        <a href="#">Pages</a>
-                    </li>
-                    <li>
+                        <a href="/dashboard" class="" >My Account</a>
                         
-                        <a href="/view-wishlist"><i class="icon-heart-o"></i>My Wishlist 
-                        {{#if wishlistCount}}
-                         <span class="cart-count" >{{wishlistCount}}</span>
-                         {{/if}}
+                    </li>
+                    
+                    <li>
+                        <a href="/view-wishlist">
+                            {{#if wishlistCount}}
+                            <span class="badge bg-secondary text-white">{{wishlistCount}}</span>
+                            {{/if}}
+                        </i>My Wishlist 
+                        
                         </a>
-                       
+                    </li>
+                    
+                    <li>
+                        {{#if logged}}
+                        <a href="/logout" class="">Logout</a>
+                            {{else}}
+                        <a href="/login" class="">Login/Signup</a>
+                        {{/if}}
                     </li>
                 </ul>
             </nav><!-- End .mobile-nav -->
