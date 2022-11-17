@@ -279,7 +279,7 @@ router.post('/getSearchProducts',userController.searchProducts)
 router.post('/filter-find',userController.filterProducts)
 
 
-
+  
 /* <-----------------------------------------------------User recently viewed products in home page------------------------------------------------> */
 
 

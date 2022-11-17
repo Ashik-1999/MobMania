@@ -426,6 +426,7 @@ function applyCoupon(){
 					console.log()
 
 					swal("Success!", "Coupon applied successfully!", "success");
+                    location.reload();
 					document.getElementById('coupon-price').innerHTML=discountPrice
 					document.getElementById('Grandtotal').innerHTML=totalPriceAfterOffer
 					document.getElementById('Applied').style.display="block"
@@ -469,6 +470,7 @@ function removeCoupon(couponId){
 		swal("Poof! Your imaginary file has been deleted!", {
 		  icon: "success",
 		});
+        location.reload();
 
 		document.getElementById('remove-coupon').style.display="block"
 	}

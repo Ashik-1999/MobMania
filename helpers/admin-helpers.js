@@ -880,7 +880,6 @@ module.exports={
         })
     },
 
-
     getMonthlyReport:()=>{
         return new Promise((resolve,reject)=>{
             db.get().collection(collection.ORDERS_COLLECTION).aggregate([

@@ -1583,8 +1583,7 @@ module.exports={
 
 
      deleteCoupon:(couponId,userId)=>{
-        console.log(userId )
-      
+        
         return new Promise((resolve,reject)=>{
             db.get().collection(collection.USERS_COLLECTION).updateOne({_id:objectId(userId)},
                 {$unset:{
@@ -1690,7 +1689,7 @@ module.exports={
      },
 
 
-     getProductsCount:()=>{
+    getProductsCount:()=>{
         return new Promise(async(resolve, reject) => {
          let count= await db.get().collection(collection.PRODUCT_COLLECTION).find().count()
           resolve(count)
